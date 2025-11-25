@@ -236,6 +236,70 @@ function updateIosNative(brandMeta) {
   }
 }
 
+function copyDir(srcDir, destDir) {
+  if (!fs.existsSync(srcDir)) return;
+  fs.mkdirSync(destDir, { recursive: true });
+
+  for (const entry of fs.readdirSync(srcDir)) {
+    const srcPath = path.join(srcDir, entry);
+    const destPath = path.join(destDir, entry);
+
+    if (fs.lstatSync(srcPath).isDirectory()) {
+      copyDir(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+      console.log(`[branding] Copied: ${srcPath} -> ${destPath}`);
+    }
+  }
+}
+
+function applyIosIcons() {
+  const srcRoot = path.join(brandingRoot, "native", "ios");
+  const destRoot = path.join(rootDir, "ios", "edge", "Images.xcassets");
+
+  const appIconSrc = path.join(srcRoot, "AppIcon.appiconset");
+  const appIconDest = path.join(destRoot, "AppIcon.appiconset");
+
+  const splashSrc = path.join(srcRoot, "SplashImage.imageset");
+  const splashDest = path.join(destRoot, "SplashImage.imageset");
+
+  if (fs.existsSync(appIconSrc)) {
+    copyDir(appIconSrc, appIconDest);
+    console.log("[branding] Applied iOS App Icon set.");
+  } else {
+    console.warn("[branding] No iOS AppIcon.appiconset found.");
+  }
+
+  if (fs.existsSync(splashSrc)) {
+    copyDir(splashSrc, splashDest);
+    console.log("[branding] Applied iOS SplashImage set.");
+  } else {
+    console.warn("[branding] No iOS SplashImage.imageset found.");
+  }
+}
+
+function applyAndroidIcons() {
+  const srcRoot = path.join(brandingRoot, "native", "android");
+  const destRoot = path.join(rootDir, "android", "app", "src", "main", "res");
+
+  if (!fs.existsSync(srcRoot)) {
+    console.warn("[branding] No Android native icon folder found.");
+    return;
+  }
+
+  const resFolders = fs.readdirSync(srcRoot);
+
+  for (const folder of resFolders) {
+    const fullSrc = path.join(srcRoot, folder);
+    const fullDest = path.join(destRoot, folder);
+
+    if (fs.lstatSync(fullSrc).isDirectory()) {
+      copyDir(fullSrc, fullDest);
+      console.log(`[branding] Applied Android assets for folder: ${folder}`);
+    }
+  }
+}
+
 function main() {
   console.log('[branding] Applying Cryptobase ATM Wallet branding (v2)...')
 
@@ -250,6 +314,9 @@ function main() {
   patchEnvConfigTs()
   updateAndroidNative(brandMeta)
   updateIosNative(brandMeta)
+  applyIosIcons();
+  applyAndroidIcons();
+
 
   console.log('[branding] Done. You can now run yarn android / yarn ios for a Cryptobase build.')
 }
