@@ -187,14 +187,31 @@ function updateIosNative(brandMeta) {
     return out
   }
 
-  // Info.plist updates:
+  // ---------- Info.plist updates ----------
   const infoPlists = findFilesByName(iosDir, 'Info.plist')
   if (infoPlists.length === 0) {
     console.warn('[branding] No Info.plist found under ios/')
   } else {
     for (const plistPath of infoPlists) {
+      // ❌ Do NOT touch Pods or framework plists (like OpenSSL.framework)
+      if (plistPath.includes(path.sep + 'Pods' + path.sep)) {
+        console.log('[branding] Skipping Pods plist:', plistPath)
+        continue
+      }
+      if (plistPath.includes('.framework' + path.sep)) {
+        console.log('[branding] Skipping framework plist:', plistPath)
+        continue
+      }
+
       let contents = readFileSafe(plistPath)
       if (!contents) continue
+
+      // Only operate on XML plists, not binary ones (which start with 'bplist')
+      const trimmed = contents.trim()
+      if (!trimmed.startsWith('<?xml')) {
+        console.log('[branding] Skipping non-XML plist:', plistPath)
+        continue
+      }
 
       contents = contents.replace(
         /<key>CFBundleName<\/key>[\s\S]*?<string>[\s\S]*?<\/string>/,
@@ -217,7 +234,7 @@ function updateIosNative(brandMeta) {
     }
   }
 
-  // Xcode project bundle identifier:
+  // ---------- Xcode project bundle identifier ----------
   const pbxprojFiles = findFilesByName(iosDir, 'project.pbxproj')
   if (pbxprojFiles.length === 0) {
     console.warn('[branding] No project.pbxproj found under ios/')
@@ -235,6 +252,7 @@ function updateIosNative(brandMeta) {
     }
   }
 }
+
 
 function copyDir(srcDir, destDir) {
   if (!fs.existsSync(srcDir)) return;
