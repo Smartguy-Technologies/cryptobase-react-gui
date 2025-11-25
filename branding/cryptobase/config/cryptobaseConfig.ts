@@ -20,7 +20,7 @@ export const cbConfig: AppConfig = {
   knowledgeBase: 'https://cryptobaseatm.com',
   lightTheme: cbLight,
   notificationServers: ['https://push2.edge.app'],
-  phoneNumber: '+1-307-702-0115',
+  phoneNumber: '+1-305-702-0115',
   referralServers: ['https://referral1.edge.app'],
   supportsEdgeLogin: false,
   supportEmail: 'support@cryptobaseatm.com',
