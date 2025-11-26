@@ -147,11 +147,11 @@ function mergeEnvWithCryptobaseAPIs() {
   }
 
   // Swap providers enabled (your choice A)
-  envJson.CHANGE_NOW_INIT = true
-  envJson.CHANGEHERO_INIT = true
-  envJson.EXOLIX_INIT = true
-  envJson.LETSEXCHANGE_INIT = true
-  envJson.SWAPUZ_INIT = true
+  envJson.CHANGE_NOW_INIT = {}
+  envJson.CHANGEHERO_INIT = {}
+  envJson.EXOLIX_INIT = {}
+  envJson.LETSEXCHANGE_INIT = {}
+  envJson.SWAPUZ_INIT = {}
 
   // plugin API keys
   envJson.PLUGIN_API_KEYS = envJson.PLUGIN_API_KEYS || {}
