@@ -7,6 +7,7 @@ export const cbConfig: AppConfig = {
   appName: 'Cryptobase',
   appNameShort: 'Cryptobase',
   appStore: 'https://apps.apple.com/app/cryptobase-atm-wallet/id6446409331',
+  playStore: 'https://play.google.com/store/apps/details?id=com.cryptobase.atm.app',
   backupAccountSite: 'https://cryptobaseatm.com',
   configName: 'cryptobase',
   darkTheme: cbDark,
