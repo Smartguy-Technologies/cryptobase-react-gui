@@ -514,6 +514,45 @@ function patchGettingStartedScene() {
   console.log('[branding] Applied Cryptobase GettingStartedScene.tsx')
 }
 
+function patchLocalizationTsStrings() {
+  console.log('[branding] Patching en_US.ts strings…')
+
+  const filePath = path.join(
+    rootDir,
+    'src',
+    'locales',
+    'strings',
+    'en_US.ts'
+  )
+
+  if (!fs.existsSync(filePath)) {
+    console.warn('[branding] en_US.ts not found, skipping.')
+    return
+  }
+
+  let data = fs.readFileSync(filePath, 'utf8')
+
+  // Replace "Edge" with "Cryptobase"
+  data = data.replace(/\bEdge\b/g, 'Cryptobase')
+
+  // Replace domain
+  data = data.replace(/edge\.app/g, 'cryptobaseatm.com')
+
+  // Replace Apple App Store link
+  data = data.replace(
+    /https:\/\/apps\.apple\.com\/[^"']+/g,
+    'https://apps.apple.com/app/cryptobase-atm-wallet/id6446409331'
+  )
+
+  // Replace Play Store link
+  data = data.replace(
+    /https:\/\/play\.google\.com\/store\/apps\/details\?id=[^"']+/g,
+    'https://play.google.com/store/apps/details?id=com.cryptobase.atm.app'
+  )
+
+  fs.writeFileSync(filePath, data)
+  console.log('[branding] en_US.ts patched successfully.')
+}
 
 // -----------------------------------------------------
 // MAIN
@@ -537,6 +576,7 @@ function main() {
   applyAndroidIcons()
   patchGettingStartedScene()
   patchLocalizationStrings()
+  patchLocalizationTsStrings()
 
   console.log('\n=== Cryptobase Branding Applied Successfully ===\n')
 }
