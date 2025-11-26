@@ -521,7 +521,6 @@ function patchLocalizationTsStrings() {
     rootDir,
     'src',
     'locales',
-    'strings',
     'en_US.ts'
   )
 
