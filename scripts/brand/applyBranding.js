@@ -490,6 +490,32 @@ function patchLocalizationStrings() {
   }
 }
 
+function patchGettingStartedScene() {
+  console.log('[branding] Patching GettingStartedScene.tsx...')
+
+  const src = path.join(
+    brandingRoot,
+    'js',
+    'GettingStartedScene.tsx'
+  )
+  const dest = path.join(
+    rootDir,
+    'src',
+    'components',
+    'scenes',
+    'GettingStartedScene.tsx'
+  )
+
+  if (!fs.existsSync(src)) {
+    console.warn('[branding] Missing branded GettingStartedScene.tsx at:', src)
+    return
+  }
+
+  copyFileSafe(src, dest)
+  console.log('[branding] Applied Cryptobase GettingStartedScene.tsx')
+}
+
+
 // -----------------------------------------------------
 // MAIN
 // -----------------------------------------------------
@@ -510,7 +536,8 @@ function main() {
   updateIosNative(brandMeta)
   applyIosIcons()
   applyAndroidIcons()
-  patchLocalizationStrings()   // ← NEW STEP
+  patchGettingStartedScene()
+  patchLocalizationStrings()
 
   console.log('\n=== Cryptobase Branding Applied Successfully ===\n')
 }
