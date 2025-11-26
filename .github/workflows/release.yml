@@ -1,0 +1,86 @@
+name: Build & Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - production
+
+jobs:
+
+  ###############################################
+  #                iOS BUILD + TESTFLIGHT
+  ###############################################
+  ios:
+    name: iOS TestFlight Release
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          yarn install
+
+      - name: Install CocoaPods
+        run: |
+          sudo gem install cocoapods
+          cd ios && pod install --repo-update
+
+      - name: Decrypt App Store Connect API key
+        run: |
+          echo "$APPSTORE_CONNECT_API_KEY" | base64 --decode > fastlane.json
+        env:
+          APPSTORE_CONNECT_API_KEY: ${{ secrets.APPSTORE_CONNECT_API_KEY }}
+
+      - name: Run Fastlane (iOS TestFlight)
+        run: |
+          bundle exec fastlane ios beta_ios
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+
+  ###############################################
+  #           ANDROID BUILD + PLAY STORE
+  ###############################################
+  android:
+    name: Android Production Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          yarn install
+
+      - name: Install Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Decode Google Play JSON Key
+        run: |
+          echo "$GOOGLE_PLAY_SERVICE_ACCOUNT" | base64 --decode > fastlane/playstore.json
+        env:
+          GOOGLE_PLAY_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT }}
+
+      - name: Run Fastlane (Android Production)
+        run: |
+          bundle exec fastlane android release_android
