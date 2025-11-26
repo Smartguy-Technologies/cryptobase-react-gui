@@ -284,7 +284,6 @@ function updateAndroidNative(brandMeta) {
     rootDir,
     'android',
     'app',
-,
     'src',
     'main',
     'res',
