@@ -14,8 +14,10 @@ import {
   useSafeAreaInsets
 } from 'react-native-safe-area-context'
 
-// 🔥 REBRANDED: Replaced Edge icon with Cryptobase icon
+// 🔥 CRYPTOBASE BRANDING — replace Edge logo
 import cbLogoIcon from '../../assets/images/cbatmLogo/Cryptobase_logo_Icon.png'
+// Additional logos (if desired)
+// import cbLogo from '../../assets/images/cbatmLogo/Cryptobase_logo_L.png'
 
 import uspImage0 from '../../assets/images/gettingStarted/usp0.png'
 import uspImage1 from '../../assets/images/gettingStarted/usp1.png'
@@ -94,15 +96,10 @@ export const GettingStartedScene: React.FC<Props> = props => {
   const [showNextButton, setShowNextButton] = React.useState(false)
 
   const handleIndexChange = (index: number): void => {
-    if (index > 0 && !showNextButton) {
-      setShowNextButton(true)
-    } else if (index <= 0 && showNextButton) {
-      setShowNextButton(false)
-    }
+    if (index > 0 && !showNextButton) setShowNextButton(true)
+    else if (index <= 0 && showNextButton) setShowNextButton(false)
 
-    if (index === paginationCount) {
-      handleCompleteUsps()
-    }
+    if (index === paginationCount) handleCompleteUsps()
   }
 
   const paginationCount = sections.length + 1
@@ -122,9 +119,7 @@ export const GettingStartedScene: React.FC<Props> = props => {
 
   const visitNewAccountScene = (): void => {
     navigation.replace('login', {
-      loginUiInitialRoute: hasLocalUsers
-        ? 'new-account'
-        : 'new-light-account',
+      loginUiInitialRoute: hasLocalUsers ? 'new-account' : 'new-light-account',
       experimentConfig
     })
   }
@@ -137,11 +132,7 @@ export const GettingStartedScene: React.FC<Props> = props => {
 
     dispatch(logEvent('Signup_Welcome'))
 
-    if (hasLocalUsers) {
-      visitPasswordScene()
-    } else {
-      visitNewAccountScene()
-    }
+    hasLocalUsers ? visitPasswordScene() : visitNewAccountScene()
   })
 
   const handlePressIndicator = useHandler((itemIndex: number) => {
@@ -191,6 +182,7 @@ export const GettingStartedScene: React.FC<Props> = props => {
           />
         </EdgeAnim>
       </ButtonFadeContainer>
+
       <TertiaryTouchable onPress={handlePressSignIn}>
         <TertiaryText>
           {lstrings.getting_started_already_have_an_account}
@@ -209,6 +201,7 @@ export const GettingStartedScene: React.FC<Props> = props => {
           </EdgeTouchableOpacity>
         </Space>
       </SkipButton>
+
       <GestureDetector gesture={gesture}>
         <Container>
           <HeroContainer>
@@ -220,7 +213,7 @@ export const GettingStartedScene: React.FC<Props> = props => {
                   distance: 80
                 }}
               >
-                {/* 🔥 REBRANDED: Cryptobase logo */}
+                {/* 🔥 REPLACED EDGE LOGO WITH CRYPTOBASE LOGO */}
                 <Image source={cbLogoIcon} />
               </EdgeAnim>
 
@@ -265,29 +258,22 @@ export const GettingStartedScene: React.FC<Props> = props => {
               </EdgeAnim>
             </WelcomeHero>
 
-            {sections.map((section, index) => {
-              return (
-                <HeroItem
-                  key={section.key}
-                  swipeOffset={scrollIndex}
-                  itemIndex={index + 1}
-                >
-                  <HeroImageContainer>
-                    <HeroImage source={section.image} />
-                  </HeroImageContainer>
-                </HeroItem>
-              )
-            })}
+            {sections.map((section, index) => (
+              <HeroItem
+                key={section.key}
+                swipeOffset={scrollIndex}
+                itemIndex={index + 1}
+              >
+                <HeroImageContainer>
+                  <HeroImage source={section.image} />
+                </HeroImageContainer>
+              </HeroItem>
+            ))}
           </HeroContainer>
 
           <Pagination>
             {Array.from({ length: paginationCount }).map((_, index) => (
-              <Pressable
-                key={index}
-                onPress={() => {
-                  handlePressIndicator(index)
-                }}
-              >
+              <Pressable key={index} onPress={() => handlePressIndicator(index)}>
                 <PageIndicator swipeOffset={scrollIndex} itemIndex={index} />
               </Pressable>
             ))}
@@ -295,33 +281,29 @@ export const GettingStartedScene: React.FC<Props> = props => {
 
           <SectionCoverAnimated swipeOffset={scrollIndex}>
             <Sections swipeOffset={scrollIndex}>
-              {sections.map((section, index) => {
-                return (
-                  <Section
-                    key={section.key}
-                    swipeOffset={scrollIndex}
-                    itemIndex={index + 1}
-                  >
-                    <ScrollView
-                      scrollIndicatorInsets={SCROLL_INDICATOR_INSET_FIX}
-                    >
-                      <SectionTitle numberOfLines={2}>
-                        {parseMarkedText(section.title)}
-                      </SectionTitle>
+              {sections.map((section, index) => (
+                <Section
+                  key={section.key}
+                  swipeOffset={scrollIndex}
+                  itemIndex={index + 1}
+                >
+                  <ScrollView scrollIndicatorInsets={SCROLL_INDICATOR_INSET_FIX}>
+                    <SectionTitle numberOfLines={2}>
+                      {parseMarkedText(section.title)}
+                    </SectionTitle>
 
-                      <SectionParagraph numberOfLines={undefined}>
-                        {section.message}
-                      </SectionParagraph>
+                    <SectionParagraph>
+                      {section.message}
+                    </SectionParagraph>
 
-                      {section.footnote == null ? null : (
-                        <Footnote numberOfLines={undefined}>
-                          {lstrings.getting_started_slide_1_footnote}
-                        </Footnote>
-                      )}
-                    </ScrollView>
-                  </Section>
-                )
-              })}
+                    {section.footnote != null && (
+                      <Footnote>
+                        {lstrings.getting_started_slide_1_footnote}
+                      </Footnote>
+                    )}
+                  </ScrollView>
+                </Section>
+              ))}
             </Sections>
 
             {footerButtons}
@@ -332,4 +314,332 @@ export const GettingStartedScene: React.FC<Props> = props => {
   )
 }
 
-// (STYLES REMAIN UNCHANGED…)
+/* -------------------------------------------------------------------------- */
+/*                               Styled Components                            */
+/* -------------------------------------------------------------------------- */
+/*  ⛔ NOTHING BELOW THIS LINE WAS MODIFIED — ALL ORIGINAL CODE RETAINED      */
+/* -------------------------------------------------------------------------- */
+
+const TertiaryTouchable = styled(EdgeTouchableOpacity)(theme => {
+  const platform = Platform.OS
+  return {
+    marginVertical: platform === 'ios' ? undefined : theme.rem(0.5),
+    marginBottom: platform === 'ios' ? theme.rem(0.5) : undefined,
+    marginTop: platform === 'ios' ? theme.rem(4.5) : undefined,
+    alignItems: 'center'
+  }
+})
+
+const TertiaryText = styled(EdgeText)(theme => props => ({
+  color: theme.textInputTextColorDisabled
+}))
+
+const TappableText = styled(EdgeText)(theme => props => ({
+  color: theme.iconTappable
+}))
+
+const Container = styled(View)({
+  flex: 1
+})
+
+const SkipButton = styled(Animated.View)<{ swipeOffset: SharedValue<number> }>(
+  _theme => props => {
+    const { swipeOffset } = props
+    return useAnimatedStyle(() => ({
+      opacity: interpolate(
+        swipeOffset.value,
+        [0, 1],
+        [0, 1],
+        Extrapolation.CLAMP
+      )
+    }))
+  }
+)
+
+const HeroContainer = styled(View)({
+  flex: 1,
+  alignItems: 'center'
+})
+
+const WelcomeHero = styled(Animated.View)<{ swipeOffset: SharedValue<number> }>(
+  _theme =>
+    props => {
+      const { swipeOffset } = props
+      return [
+        {
+          alignItems: 'center',
+          justifyContent: 'center',
+          flex: 1
+        },
+        useAnimatedStyle(() => ({
+          opacity: interpolate(swipeOffset.value, [0, 0.5], [1, 0]),
+          transform: [
+            {
+              scale: interpolate(
+                swipeOffset.value,
+                [0, 1],
+                [1, 0],
+                Extrapolation.CLAMP
+              )
+            }
+          ]
+        }))
+      ]
+    }
+)
+
+const WelcomeHeroTitle = styled(UnscaledText)(theme => ({
+  color: theme.primaryText,
+  fontFamily: theme.fontFaceDefault,
+  fontSize: theme.rem(2.25),
+  includeFontPadding: false,
+  lineHeight: theme.rem(2.8),
+  paddingVertical: theme.rem(1),
+  textAlign: 'center'
+}))
+
+const WelcomeHeroMessage = styled(EdgeText)(theme => ({
+  fontSize: theme.rem(0.78),
+  paddingVertical: theme.rem(1),
+  textAlign: 'center'
+}))
+
+const WelcomeHeroPrompt = styled(EdgeText)(theme => ({
+  fontSize: theme.rem(0.75),
+  color: theme.textLink,
+  fontFamily: theme.fontFaceBold,
+  textAlign: 'center',
+  margin: theme.rem(0.5)
+}))
+
+const HeroItem = styled(Animated.View)<{
+  swipeOffset: SharedValue<number>
+  itemIndex: number
+}>(theme =>
+  props => {
+    const { swipeOffset, itemIndex } = props
+    const isFirstItem = itemIndex === 1
+    const { width: screenWidth } = useSafeAreaFrame()
+    const translateWidth = screenWidth
+    return [
+      {
+        alignItems: 'center',
+        aspectRatio: 1,
+        padding: theme.rem(1),
+        position: 'absolute',
+        height: '100%',
+        width: '100%'
+      },
+      useAnimatedStyle(() => {
+        const opacity = interpolate(
+          swipeOffset.value,
+          [itemIndex - 1, itemIndex, itemIndex + 1],
+          [0, 1, 0],
+          Extrapolation.CLAMP
+        )
+        const scale = interpolate(
+          swipeOffset.value,
+          [itemIndex - 1, itemIndex, itemIndex + 1],
+          [0.3, 1, 0.3]
+        )
+        const translateX = interpolate(
+          swipeOffset.value,
+          [itemIndex - 1, itemIndex, itemIndex + 1],
+          [isFirstItem ? 0 : translateWidth, 0, -translateWidth]
+        )
+        return {
+          opacity,
+          transform: [{ translateX }, { scale }]
+        }
+      })
+    ]
+  }
+)
+
+const HeroImageContainer = styled(View)({
+  alignItems: 'stretch',
+  aspectRatio: 1,
+  backgroundColor: 'white',
+  borderRadius: 1000,
+  maxHeight: '100%',
+  overflow: 'hidden',
+  width: '100%'
+})
+
+const HeroImage = styled(Image)({
+  maxHeight: '100%',
+  maxWidth: '100%',
+  aspectRatio: 1
+})
+
+const Pagination = styled(View)(theme => ({
+  flexDirection: 'row',
+  justifyContent: 'center',
+  marginVertical: theme.rem(0.7)
+}))
+
+const PageIndicator = styled(Animated.View)<{
+  swipeOffset: SharedValue<number>
+  itemIndex: number
+}>(theme =>
+  props => {
+    const themeIcon = theme.icon
+    const themeIconTappable = theme.iconTappable
+    const { itemIndex, swipeOffset } = props
+    return [
+      {
+        borderRadius: 10,
+        margin: theme.rem(0.3),
+        height: theme.rem(0.6),
+        width: theme.rem(0.6)
+      },
+      useAnimatedStyle(() => {
+        const delta =
+          1 -
+          Math.max(
+            0,
+            Math.min(1, Math.abs(itemIndex - swipeOffset.value))
+          )
+        const opacity = interpolate(delta, [0, 1], [0.5, 1])
+        const backgroundColor = interpolateColor(
+          delta,
+          [0, 1],
+          [themeIcon, themeIconTappable]
+        )
+        return {
+          backgroundColor,
+          opacity
+        }
+      })
+    ]
+  }
+)
+
+const SectionCoverAnimated = styled(Animated.View)<{
+  swipeOffset: SharedValue<number>
+}>(theme =>
+  props => {
+    const { swipeOffset } = props
+    const themeRem = theme.rem(1)
+    const themeModal = theme.modal
+    const themeModalLikeBackground = theme.modalLikeBackground
+    const insets = useSafeAreaInsets()
+
+    return [
+      {
+        alignItems: 'stretch',
+        justifyContent: 'flex-end',
+        paddingVertical: theme.rem(1),
+        paddingBottom: insets.bottom + theme.rem(1),
+        marginBottom: -insets.bottom
+      },
+      useAnimatedStyle(() => {
+        const backgroundColor = interpolateColor(
+          swipeOffset.value,
+          [0, 1],
+          [`${themeModal}00`, themeModalLikeBackground]
+        )
+        const paddingVertical = interpolate(
+          swipeOffset.value,
+          [0, 1],
+          [0, themeRem],
+          Extrapolation.CLAMP
+        )
+        const flexGrow = interpolate(
+          swipeOffset.value,
+          [0, 1],
+          [0, 1.2],
+          Extrapolation.CLAMP
+        )
+        return {
+          backgroundColor,
+          paddingVertical,
+          flexGrow
+        }
+      })
+    ]
+  }
+)
+
+const Sections = styled(Animated.View)<{
+  swipeOffset: SharedValue<number>
+}>(theme =>
+  props => {
+    const { swipeOffset } = props
+    return [
+      {
+        paddingBottom: theme.rem(1)
+      },
+      useAnimatedStyle(() => ({
+        flexGrow: interpolate(swipeOffset.value, [0, 1], [0, 1.5])
+      }))
+    ]
+  }
+)
+
+const Section = styled(Animated.View)<{
+  swipeOffset: SharedValue<number>
+  itemIndex: number
+}>(theme =>
+  props => {
+    const { itemIndex, swipeOffset } = props
+    const isFirstItem = itemIndex === 1
+    const { width: screenWidth } = useSafeAreaFrame()
+    const translateWidth = screenWidth / 2
+    return [
+      {
+        marginHorizontal: theme.rem(2),
+        position: 'absolute',
+        height: '100%'
+      },
+      useAnimatedStyle(() => {
+        const opacity = interpolate(
+          swipeOffset.value,
+          [itemIndex - 1, itemIndex, itemIndex + 1],
+          [0, 1, 0]
+        )
+        const translateX = interpolate(
+          swipeOffset.value,
+          [itemIndex - 1, itemIndex, itemIndex + 1],
+          [isFirstItem ? 0 : translateWidth, 0, -translateWidth]
+        )
+        return {
+          transform: [{ translateX }],
+          opacity
+        }
+      })
+    ]
+  }
+)
+
+const SectionTitle = styled(EdgeText)(theme => ({
+  color: theme.primaryText,
+  fontFamily: theme.fontFaceDefault,
+  fontSize: theme.rem(1.6875),
+  includeFontPadding: false
+}))
+
+const SectionParagraph = styled(EdgeText)(theme => ({
+  fontSize: theme.rem(0.75),
+  marginVertical: theme.rem(1)
+}))
+
+const Footnote = styled(EdgeText)(theme => ({
+  color: theme.primaryText,
+  fontFamily: theme.fontFaceDefault,
+  fontSize: theme.rem(0.75),
+  marginBottom: theme.rem(1),
+  includeFontPadding: false
+}))
+
+const ButtonFadeContainer = styled(View)(theme => {
+  return Platform.OS === 'ios'
+    ? {
+        position: 'absolute',
+        bottom: theme.rem(5),
+        left: 0,
+        right: 0,
+        zIndex: 1
+      }
+    : { position: 'relative' }
+})
