@@ -1,17 +1,16 @@
 /**
- * Cryptobase ATM Wallet – Branding Script v3
+ * Cryptobase ATM Wallet – Branding Script v4
  *
- * This script:
- *   1. Generates env.json from branding/cryptobase/env/env.cryptobase.json
- *   2. Injects Cryptobase API keys & overrides (Option A rules)
- *   3. Injects Moonpay into RAMP_PLUGIN_INITS
- *   4. Enables swap providers (your final choice)
- *   5. Forces APP_CONFIG = "cryptobase"
- *   6. Patches envConfig.ts default APP_CONFIG
- *   7. Injects cryptobase theme/config/appConfig.ts
- *   8. Applies bundleId + appName to Android native files
- *   9. Applies bundleId + appName to iOS native Info.plist (safe mode)
- *  10. Copies native icons/splashes for iOS + Android
+ * v4 adds:
+ *   - Localization rebranding:
+ *       - "Edge Wallet" → "Cryptobase Wallet"
+ *       - "Edge Account" → "Cryptobase Account"
+ *       - standalone "Edge" → "Cryptobase"
+ *       - "EDGE" → "CRYPTOBASE"
+ *       - edge.app → cryptobaseatm.com
+ *       - any App Store / Play Store URL → Cryptobase ATM Wallet URLs
+ *
+ *   (plus all v3 behavior you already have)
  */
 
 const fs = require('fs')
@@ -25,7 +24,11 @@ const brandingRoot = path.join(rootDir, 'branding', 'cryptobase')
 const envTemplatePath = path.join(brandingRoot, 'env', 'env.cryptobase.json')
 const brandConfigPath = path.join(brandingRoot, 'brand-config.json')
 
-// Utility functions
+// Your Cryptobase store URLs:
+const CRYPTOBASE_IOS_URL = 'https://apps.apple.com/app/cryptobase-atm-wallet/id6446409331'
+const CRYPTOBASE_ANDROID_URL = 'https://play.google.com/store/apps/details?id=com.cryptobase.atm.app'
+
+// Utility functions (same as v3)
 function readFileSafe(filePath) {
   try {
     return fs.readFileSync(filePath, 'utf8')
@@ -72,6 +75,7 @@ function loadJson(pathToJson) {
 
 // -----------------------------------------------------
 // STEP 1 — Build env.json (with overrides from cryptobaseAPIs.ts)
+// (same as v3; unchanged)
 // -----------------------------------------------------
 function mergeEnvWithCryptobaseAPIs() {
   console.log('[branding] Generating env.json with Cryptobase overrides...')
@@ -83,69 +87,58 @@ function mergeEnvWithCryptobaseAPIs() {
 
   const envJson = loadJson(envTemplatePath)
 
-  // -----------------------------------------------------
-  // Load Cryptobase APIs (TS file). We can require() safely
-  // because Node understands basic TS format for simple exports.
-  // -----------------------------------------------------
   const cryptobaseApiPath = path.join(
     brandingRoot,
     'config',
     'cryptobaseAPIs.ts'
   )
 
-  if (!fs.existsSync(cryptobaseApiPath)) {
+  let cryptobaseAPIs = {}
+  if (fs.existsSync(cryptobaseApiPath)) {
+    try {
+      const raw = readFileSafe(cryptobaseApiPath)
+        .replace(/export\s+const\s+/g, 'const ')
+        .replace(/export\s+\{[\s\S]*?\}/g, '')
+      const wrapper = new Function('sandbox', `
+        with (sandbox) {
+          ${raw}
+          return {
+            coingeckoApi,
+            airbitzAPI,
+            moonpayApi,
+            changeheroApi,
+            changenowApi,
+            exolixApi,
+            letsexchangeApi,
+            swapuzApi,
+            bitcoinInit,
+            sentryDSN,
+            sentryUrl,
+            sentryAuth,
+            sentryOSlug,
+            sentryPSlug
+          }
+        }
+      `)
+      cryptobaseAPIs = wrapper({})
+    } catch (e) {
+      console.warn('[branding] Failed to parse cryptobaseAPIs.ts')
+    }
+  } else {
     console.warn('[branding] No cryptobaseAPIs.ts found; skipping API overrides.')
   }
 
-  // Quick TS loader: strip exports + parse with eval
-  let cryptobaseAPIs = {}
-  try {
-    const raw = readFileSafe(cryptobaseApiPath)
-      .replace(/export\s+const\s+/g, 'const ')
-      .replace(/export\s+\{[\s\S]*?\}/g, '')
-    const sandbox = {}
-    const wrapper = new Function('sandbox', `
-      with (sandbox) {
-        ${raw}
-        return {
-          coingeckoApi,
-          airbitzAPI,
-          moonpayApi,
-          changeheroApi,
-          changenowApi,
-          exolixApi,
-          letsexchangeApi,
-          swapuzApi,
-          bitcoinInit,
-          sentryDSN,
-          sentryUrl,
-          sentryAuth,
-          sentryOSlug,
-          sentryPSlug
-        }
-      }
-    `)
-    cryptobaseAPIs = wrapper({})
-  } catch (e) {
-    console.warn('[branding] Failed to parse cryptobaseAPIs.ts')
-  }
-
-  // -----------------------------------------------------
-  // Apply Option A overrides:
-  // ONLY keys present in cryptobaseAPIs.ts are overridden
-  // -----------------------------------------------------
-
-  // 1) Coingecko
+  // Coingecko
   if (cryptobaseAPIs.coingeckoApi) {
     envJson.COINGECKO_API_KEY = cryptobaseAPIs.coingeckoApi
   }
 
-  // 2) Airbitz / Edge API
+  // Edge API (Airbitz)
   if (cryptobaseAPIs.airbitzAPI) {
     envJson.EDGE_API_KEY = cryptobaseAPIs.airbitzAPI
   }
 
-  // 3) Moonpay
+  // Moonpay
   if (cryptobaseAPIs.moonpayApi) {
     envJson.RAMP_PLUGIN_INITS = envJson.RAMP_PLUGIN_INITS || {}
     envJson.RAMP_PLUGIN_INITS.moonpay = {
@@ -153,14 +146,14 @@ function mergeEnvWithCryptobaseAPIs() {
     }
   }
 
-  // 4) Swap providers enabled (your choice A)
+  // Swap providers enabled (your choice A)
   envJson.CHANGE_NOW_INIT = true
   envJson.CHANGEHERO_INIT = true
   envJson.EXOLIX_INIT = true
   envJson.LETSEXCHANGE_INIT = true
   envJson.SWAPUZ_INIT = true
 
-  // 5) plugin API keys
+  // plugin API keys
   envJson.PLUGIN_API_KEYS = envJson.PLUGIN_API_KEYS || {}
   if (cryptobaseAPIs.changeheroApi?.apiKey) {
     envJson.PLUGIN_API_KEYS.changehero = cryptobaseAPIs.changeheroApi.apiKey
@@ -178,14 +171,14 @@ function mergeEnvWithCryptobaseAPIs() {
     envJson.PLUGIN_API_KEYS.swapuz = cryptobaseAPIs.swapuzApi.apiKey
   }
 
-  // 6) Bitcoin init
+  // Bitcoin init
   if (cryptobaseAPIs.bitcoinInit?.nowNodeApiKey) {
     envJson.BITCOIN_INIT = envJson.BITCOIN_INIT || {}
     envJson.BITCOIN_INIT.nowNodeApiKey =
       cryptobaseAPIs.bitcoinInit.nowNodeApiKey
   }
 
-  // 7) Sentry
+  // Sentry
   if (cryptobaseAPIs.sentryDSN) envJson.SENTRY_DSN_URL = cryptobaseAPIs.sentryDSN
   if (cryptobaseAPIs.sentryUrl)
     envJson.SENTRY_MAP_UPLOAD_URL = cryptobaseAPIs.sentryUrl
@@ -196,10 +189,10 @@ function mergeEnvWithCryptobaseAPIs() {
   if (cryptobaseAPIs.sentryPSlug)
     envJson.SENTRY_PROJECT_SLUG = cryptobaseAPIs.sentryPSlug
 
-  // 8) Force APP_CONFIG = "cryptobase"
+  // APP_CONFIG
   envJson.APP_CONFIG = 'cryptobase'
 
-  // Write final env.json
+  // Write
   const dest = path.join(rootDir, 'env.json')
   writeFileSafe(dest, JSON.stringify(envJson, null, 2))
   console.log('[branding] env.json created.')
@@ -212,7 +205,7 @@ function patchEnvConfigTs() {
   const envConfigPath = path.join(rootDir, 'src', 'envConfig.ts')
   let contents = readFileSafe(envConfigPath)
   if (!contents) {
-    console.warn('[branding] envConfig.ts missing, skipping default APP_CONFIG patch.')
+    console.warn('[branding] envConfig.ts missing, skipping APP_CONFIG patch.')
     return
   }
 
@@ -231,7 +224,7 @@ function patchEnvConfigTs() {
 }
 
 // -----------------------------------------------------
-// STEP 3 — Inject Cryptobase configs & theme files
+// STEP 3 — Inject Cryptobase configs & theme
 // -----------------------------------------------------
 function applyThemeAndConfigTs() {
   const mappings = [
@@ -261,7 +254,6 @@ function applyThemeAndConfigTs() {
     copyFileSafe(src, dest)
   }
 
-  // Replace appConfig.ts with dynamic loader
   const templateSrc = path.join(
     rootDir,
     'src',
@@ -292,6 +284,7 @@ function updateAndroidNative(brandMeta) {
     rootDir,
     'android',
     'app',
+,
     'src',
     'main',
     'res',
@@ -299,7 +292,6 @@ function updateAndroidNative(brandMeta) {
     'strings.xml'
   )
 
-  // applicationId
   let gradleText = readFileSafe(buildGradle)
   if (gradleText) {
     gradleText = gradleText.replace(
@@ -310,7 +302,6 @@ function updateAndroidNative(brandMeta) {
     console.log('[branding] Updated Android applicationId →', bundleId)
   }
 
-  // manifest package
   let manifestText = readFileSafe(manifest)
   if (manifestText) {
     manifestText = manifestText.replace(
@@ -321,7 +312,6 @@ function updateAndroidNative(brandMeta) {
     console.log('[branding] Updated Android Manifest package →', bundleId)
   }
 
-  // app_name
   let stringsText = readFileSafe(strings)
   if (stringsText) {
     stringsText = stringsText.replace(
@@ -334,7 +324,7 @@ function updateAndroidNative(brandMeta) {
 }
 
 // -----------------------------------------------------
-// STEP 5 — iOS native branding (SAFE plist logic)
+// STEP 5 — iOS native branding
 // -----------------------------------------------------
 function updateIosNative(brandMeta) {
   const bundleId = brandMeta.bundleId
@@ -355,7 +345,6 @@ function updateIosNative(brandMeta) {
     return results
   }
 
-  // Info.plist modifications
   const plists = findFiles(iosDir, 'Info.plist')
   for (const plist of plists) {
     if (plist.includes('/Pods/')) continue
@@ -363,8 +352,6 @@ function updateIosNative(brandMeta) {
 
     let txt = readFileSafe(plist)
     if (!txt) continue
-
-    // Skip binary plists
     if (!txt.trim().startsWith('<?xml')) {
       console.log('[branding] Skipping non-XML plist:', plist)
       continue
@@ -374,12 +361,10 @@ function updateIosNative(brandMeta) {
       /<key>CFBundleName<\/key>[\s\S]*?<string>[\s\S]*?<\/string>/,
       `<key>CFBundleName</key>\n\t<string>${appName}</string>`
     )
-
     txt = txt.replace(
       /<key>CFBundleDisplayName<\/key>[\s\S]*?<string>[\s\S]*?<\/string>/,
       `<key>CFBundleDisplayName</key>\n\t<string>${appName}</string>`
     )
-
     txt = txt.replace(
       /<key>CFBundleIdentifier<\/key>[\s\S]*?<string>[\s\S]*?<\/string>/,
       `<key>CFBundleIdentifier</key>\n\t<string>${bundleId}</string>`
@@ -389,7 +374,6 @@ function updateIosNative(brandMeta) {
     console.log('[branding] Updated iOS Info.plist →', plist)
   }
 
-  // PBXProject bundle ID updates
   const pbxFiles = findFiles(iosDir, 'project.pbxproj')
   for (const pbx of pbxFiles) {
     let txt = readFileSafe(pbx)
@@ -404,7 +388,7 @@ function updateIosNative(brandMeta) {
 }
 
 // -----------------------------------------------------
-// STEP 6 — Apply native icons/splashes
+// STEP 6 — Native icons/splashes
 // -----------------------------------------------------
 function applyIosIcons() {
   const srcRoot = path.join(brandingRoot, 'native', 'ios')
@@ -412,7 +396,6 @@ function applyIosIcons() {
 
   const appIconSrc = path.join(srcRoot, 'AppIcon.appiconset')
   const appIconDest = path.join(destRoot, 'AppIcon.appiconset')
-
   const splashSrc = path.join(srcRoot, 'SplashImage.imageset')
   const splashDest = path.join(destRoot, 'SplashImage.imageset')
 
@@ -420,7 +403,6 @@ function applyIosIcons() {
     copyDir(appIconSrc, appIconDest)
     console.log('[branding] Applied iOS App Icon set.')
   }
-
   if (fs.existsSync(splashSrc)) {
     copyDir(splashSrc, splashDest)
     console.log('[branding] Applied iOS SplashImage set.')
@@ -444,10 +426,75 @@ function applyAndroidIcons() {
 }
 
 // -----------------------------------------------------
+// STEP 7 — Localization text + URLs rebranding
+// -----------------------------------------------------
+function patchLocalizationStrings() {
+  console.log('[branding] Patching localization strings...')
+
+  const targetDirs = [
+    path.join(rootDir, 'src', 'locales', 'strings'),
+    path.join(rootDir, 'localization')
+  ]
+
+  function processFile(filePath) {
+    if (!filePath.endsWith('.json')) return
+    let contents = readFileSafe(filePath)
+    if (!contents) return
+
+    let updated = contents
+
+    // 1. Brand phrase replacements (Option A)
+    updated = updated.replace(/\bEdge Wallet\b/g, 'Cryptobase Wallet')
+    updated = updated.replace(/\bEdge Account\b/g, 'Cryptobase Account')
+    updated = updated.replace(/\bEdge Login\b/g, 'Cryptobase Login')
+
+    updated = updated.replace(/\bEDGE WALLET\b/g, 'CRYPTOBASE WALLET')
+    updated = updated.replace(/\bEDGE ACCOUNT\b/g, 'CRYPTOBASE ACCOUNT')
+    updated = updated.replace(/\bEDGE LOGIN\b/g, 'CRYPTOBASE LOGIN')
+
+    // Standalone "Edge" (not part of longer word)
+    updated = updated.replace(/\bEdge\b/g, 'Cryptobase')
+    updated = updated.replace(/\bEDGE\b/g, 'CRYPTOBASE')
+
+    // 2. edge.app → cryptobaseatm.com
+    updated = updated.replace(/https?:\/\/edge\.app[^\s"']*/g, 'https://cryptobaseatm.com')
+    updated = updated.replace(/\bedge\.app\b/g, 'cryptobaseatm.com')
+
+    // 3. Any iOS App Store link → Cryptobase ATM Wallet iOS URL
+    updated = updated.replace(/https?:\/\/apps\.apple\.com[^\s"']*/g, CRYPTOBASE_IOS_URL)
+
+    // 4. Any Play Store link → Cryptobase ATM Wallet Android URL
+    updated = updated.replace(/https?:\/\/play\.google\.com\/store\/apps\/details[^\s"']*/g, CRYPTOBASE_ANDROID_URL)
+
+    if (updated !== contents) {
+      writeFileSafe(filePath, updated)
+      console.log('[branding] Patched localization file:', filePath)
+    }
+  }
+
+  for (const dir of targetDirs) {
+    if (!fs.existsSync(dir)) continue
+    const stack = [dir]
+    while (stack.length > 0) {
+      const current = stack.pop()
+      const entries = fs.readdirSync(current, { withFileTypes: true })
+      for (const entry of entries) {
+        const full = path.join(current, entry.name)
+        if (entry.isDirectory()) {
+          stack.push(full)
+        } else {
+          processFile(full)
+        }
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------
 // MAIN
 // -----------------------------------------------------
 function main() {
-  console.log('\n=== Applying Cryptobase Branding v3 ===\n')
+  console.log('\n=== Applying Cryptobase Branding v4 ===\n')
 
   if (!fs.existsSync(brandConfigPath)) {
     console.error('[branding] Missing brand-config.json')
@@ -463,6 +510,7 @@ function main() {
   updateIosNative(brandMeta)
   applyIosIcons()
   applyAndroidIcons()
+  patchLocalizationStrings()   // ← NEW STEP
 
   console.log('\n=== Cryptobase Branding Applied Successfully ===\n')
 }
