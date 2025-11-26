@@ -1,34 +1,41 @@
 /**
- * Cryptobase ATM Wallet – Branding Script v4
+ * Cryptobase ATM Wallet – Branding Script v6
  *
- * v4 adds:
- *   - Localization rebranding:
- *       - "Edge Wallet" → "Cryptobase Wallet"
- *       - "Edge Account" → "Cryptobase Account"
- *       - standalone "Edge" → "Cryptobase"
- *       - "EDGE" → "CRYPTOBASE"
- *       - edge.app → cryptobaseatm.com
- *       - any App Store / Play Store URL → Cryptobase ATM Wallet URLs
- *
- *   (plus all v3 behavior you already have)
+ * Automates:
+ *  - env.json generation & overrides
+ *  - envConfig.ts APP_CONFIG default
+ *  - theme/config/appConfig wiring
+ *  - iOS & Android native branding (name, bundleId)
+ *  - Icon & splash replacement
+ *  - Localization branding (JSON + en_US.ts)
+ *  - GettingStartedScene.tsx replacement
+ *  - Main.tsx patch:
+ *      * Map (extraTab) first + default
+ *      * Tab order: extraTab, home, walletsTab, buyTab, sellTab
+ *      * Remove swapTab
+ *      * Buy tab → MoonPayBuyScene
+ *      * Sell tab → MoonPaySellScene
  */
 
 const fs = require('fs')
 const path = require('path')
 
 // -----------------------------------------------------
-// PATHS
+// PATHS & CONSTANTS
 // -----------------------------------------------------
 const rootDir = path.resolve(__dirname, '..', '..')
 const brandingRoot = path.join(rootDir, 'branding', 'cryptobase')
 const envTemplatePath = path.join(brandingRoot, 'env', 'env.cryptobase.json')
 const brandConfigPath = path.join(brandingRoot, 'brand-config.json')
 
-// Your Cryptobase store URLs:
-const CRYPTOBASE_IOS_URL = 'https://apps.apple.com/app/cryptobase-atm-wallet/id6446409331'
-const CRYPTOBASE_ANDROID_URL = 'https://play.google.com/store/apps/details?id=com.cryptobase.atm.app'
+const CRYPTOBASE_IOS_URL =
+  'https://apps.apple.com/app/cryptobase-atm-wallet/id6446409331'
+const CRYPTOBASE_ANDROID_URL =
+  'https://play.google.com/store/apps/details?id=com.cryptobase.atm.app'
 
-// Utility functions (same as v3)
+// -----------------------------------------------------
+// UTILITIES
+// -----------------------------------------------------
 function readFileSafe(filePath) {
   try {
     return fs.readFileSync(filePath, 'utf8')
@@ -69,13 +76,12 @@ function copyDir(srcDir, destDir) {
   }
 }
 
-function loadJson(pathToJson) {
-  return JSON.parse(fs.readFileSync(pathToJson, 'utf8'))
+function loadJson(jsonPath) {
+  return JSON.parse(fs.readFileSync(jsonPath, 'utf8'))
 }
 
 // -----------------------------------------------------
-// STEP 1 — Build env.json (with overrides from cryptobaseAPIs.ts)
-// (same as v3; unchanged)
+// STEP 1 — Build env.json with Cryptobase overrides
 // -----------------------------------------------------
 function mergeEnvWithCryptobaseAPIs() {
   console.log('[branding] Generating env.json with Cryptobase overrides...')
@@ -87,6 +93,7 @@ function mergeEnvWithCryptobaseAPIs() {
 
   const envJson = loadJson(envTemplatePath)
 
+  // Load CryptobaseAPIs.ts if present:
   const cryptobaseApiPath = path.join(
     brandingRoot,
     'config',
@@ -122,23 +129,23 @@ function mergeEnvWithCryptobaseAPIs() {
       `)
       cryptobaseAPIs = wrapper({})
     } catch (e) {
-      console.warn('[branding] Failed to parse cryptobaseAPIs.ts')
+      console.warn('[branding] Failed to parse cryptobaseAPIs.ts:', e.message)
     }
   } else {
     console.warn('[branding] No cryptobaseAPIs.ts found; skipping API overrides.')
   }
 
-  // Coingecko
+  // 1) Coingecko
   if (cryptobaseAPIs.coingeckoApi) {
     envJson.COINGECKO_API_KEY = cryptobaseAPIs.coingeckoApi
   }
 
-  // Edge API (Airbitz)
+  // 2) Edge API (Airbitz)
   if (cryptobaseAPIs.airbitzAPI) {
     envJson.EDGE_API_KEY = cryptobaseAPIs.airbitzAPI
   }
 
-  // Moonpay
+  // 3) Moonpay
   if (cryptobaseAPIs.moonpayApi) {
     envJson.RAMP_PLUGIN_INITS = envJson.RAMP_PLUGIN_INITS || {}
     envJson.RAMP_PLUGIN_INITS.moonpay = {
@@ -146,14 +153,14 @@ function mergeEnvWithCryptobaseAPIs() {
     }
   }
 
-  // Swap providers enabled (your choice A)
-  envJson.CHANGE_NOW_INIT = {}
-  envJson.CHANGEHERO_INIT = {}
-  envJson.EXOLIX_INIT = {}
-  envJson.LETSEXCHANGE_INIT = {}
-  envJson.SWAPUZ_INIT = {}
+  // 4) Swap providers enabled (must be objects, not booleans)
+  envJson.CHANGE_NOW_INIT = envJson.CHANGE_NOW_INIT || {}
+  envJson.CHANGEHERO_INIT = envJson.CHANGEHERO_INIT || {}
+  envJson.EXOLIX_INIT = envJson.EXOLIX_INIT || {}
+  envJson.LETSEXCHANGE_INIT = envJson.LETSEXCHANGE_INIT || {}
+  envJson.SWAPUZ_INIT = envJson.SWAPUZ_INIT || {}
 
-  // plugin API keys
+  // 5) plugin API keys
   envJson.PLUGIN_API_KEYS = envJson.PLUGIN_API_KEYS || {}
   if (cryptobaseAPIs.changeheroApi?.apiKey) {
     envJson.PLUGIN_API_KEYS.changehero = cryptobaseAPIs.changeheroApi.apiKey
@@ -165,34 +172,41 @@ function mergeEnvWithCryptobaseAPIs() {
     envJson.PLUGIN_API_KEYS.exolix = cryptobaseAPIs.exolixApi.apiKey
   }
   if (cryptobaseAPIs.letsexchangeApi?.apiKey) {
-    envJson.PLUGIN_API_KEYS.letsexchange = cryptobaseAPIs.letsexchangeApi.apiKey
+    envJson.PLUGIN_API_KEYS.letsexchange =
+      cryptobaseAPIs.letsexchangeApi.apiKey
   }
   if (cryptobaseAPIs.swapuzApi?.apiKey) {
     envJson.PLUGIN_API_KEYS.swapuz = cryptobaseAPIs.swapuzApi.apiKey
   }
 
-  // Bitcoin init
+  // 6) Bitcoin init
   if (cryptobaseAPIs.bitcoinInit?.nowNodeApiKey) {
     envJson.BITCOIN_INIT = envJson.BITCOIN_INIT || {}
     envJson.BITCOIN_INIT.nowNodeApiKey =
       cryptobaseAPIs.bitcoinInit.nowNodeApiKey
   }
 
-  // Sentry
-  if (cryptobaseAPIs.sentryDSN) envJson.SENTRY_DSN_URL = cryptobaseAPIs.sentryDSN
-  if (cryptobaseAPIs.sentryUrl)
+  // 7) Sentry
+  if (cryptobaseAPIs.sentryDSN) {
+    envJson.SENTRY_DSN_URL = cryptobaseAPIs.sentryDSN
+  }
+  if (cryptobaseAPIs.sentryUrl) {
     envJson.SENTRY_MAP_UPLOAD_URL = cryptobaseAPIs.sentryUrl
-  if (cryptobaseAPIs.sentryAuth)
+  }
+  if (cryptobaseAPIs.sentryAuth) {
     envJson.SENTRY_MAP_UPLOAD_AUTH_TOKEN = cryptobaseAPIs.sentryAuth
-  if (cryptobaseAPIs.sentryOSlug)
+  }
+  if (cryptobaseAPIs.sentryOSlug) {
     envJson.SENTRY_ORGANIZATION_SLUG = cryptobaseAPIs.sentryOSlug
-  if (cryptobaseAPIs.sentryPSlug)
+  }
+  if (cryptobaseAPIs.sentryPSlug) {
     envJson.SENTRY_PROJECT_SLUG = cryptobaseAPIs.sentryPSlug
+  }
 
-  // APP_CONFIG
+  // 8) APP_CONFIG
   envJson.APP_CONFIG = 'cryptobase'
 
-  // Write
+  // Final write:
   const dest = path.join(rootDir, 'env.json')
   writeFileSafe(dest, JSON.stringify(envJson, null, 2))
   console.log('[branding] env.json created.')
@@ -215,16 +229,16 @@ function patchEnvConfigTs() {
   if (contents.includes(before)) {
     contents = contents.replace(before, after)
     writeFileSafe(envConfigPath, contents)
-    console.log('[branding] Patched envConfig.ts default APP_CONFIG → cryptobase')
+    console.log('[branding] Patched envConfig.ts APP_CONFIG → cryptobase')
   } else if (contents.includes(after)) {
-    console.log('[branding] envConfig.ts APP_CONFIG already set to cryptobase')
+    console.log('[branding] envConfig.ts APP_CONFIG already cryptobase')
   } else {
-    console.warn('[branding] Could not locate APP_CONFIG default in envConfig.ts')
+    console.warn('[branding] APP_CONFIG default not found in envConfig.ts')
   }
 }
 
 // -----------------------------------------------------
-// STEP 3 — Inject Cryptobase configs & theme
+// STEP 3 — Copy Cryptobase configs & theme files
 // -----------------------------------------------------
 function applyThemeAndConfigTs() {
   const mappings = [
@@ -291,6 +305,7 @@ function updateAndroidNative(brandMeta) {
     'strings.xml'
   )
 
+  // applicationId
   let gradleText = readFileSafe(buildGradle)
   if (gradleText) {
     gradleText = gradleText.replace(
@@ -301,6 +316,7 @@ function updateAndroidNative(brandMeta) {
     console.log('[branding] Updated Android applicationId →', bundleId)
   }
 
+  // manifest package
   let manifestText = readFileSafe(manifest)
   if (manifestText) {
     manifestText = manifestText.replace(
@@ -311,6 +327,7 @@ function updateAndroidNative(brandMeta) {
     console.log('[branding] Updated Android Manifest package →', bundleId)
   }
 
+  // strings.xml app_name
   let stringsText = readFileSafe(strings)
   if (stringsText) {
     stringsText = stringsText.replace(
@@ -387,7 +404,7 @@ function updateIosNative(brandMeta) {
 }
 
 // -----------------------------------------------------
-// STEP 6 — Native icons/splashes
+// STEP 6 — Icons & Splash
 // -----------------------------------------------------
 function applyIosIcons() {
   const srcRoot = path.join(brandingRoot, 'native', 'ios')
@@ -425,10 +442,10 @@ function applyAndroidIcons() {
 }
 
 // -----------------------------------------------------
-// STEP 7 — Localization text + URLs rebranding
+// STEP 7 — Localization JSON branding
 // -----------------------------------------------------
-function patchLocalizationStrings() {
-  console.log('[branding] Patching localization strings...')
+function patchLocalizationJson() {
+  console.log('[branding] Patching localization JSON files...')
 
   const targetDirs = [
     path.join(rootDir, 'src', 'locales', 'strings'),
@@ -442,7 +459,7 @@ function patchLocalizationStrings() {
 
     let updated = contents
 
-    // 1. Brand phrase replacements (Option A)
+    // Brand phrase replacements (Option A)
     updated = updated.replace(/\bEdge Wallet\b/g, 'Cryptobase Wallet')
     updated = updated.replace(/\bEdge Account\b/g, 'Cryptobase Account')
     updated = updated.replace(/\bEdge Login\b/g, 'Cryptobase Login')
@@ -451,23 +468,29 @@ function patchLocalizationStrings() {
     updated = updated.replace(/\bEDGE ACCOUNT\b/g, 'CRYPTOBASE ACCOUNT')
     updated = updated.replace(/\bEDGE LOGIN\b/g, 'CRYPTOBASE LOGIN')
 
-    // Standalone "Edge" (not part of longer word)
+    // Standalone "Edge"
     updated = updated.replace(/\bEdge\b/g, 'Cryptobase')
     updated = updated.replace(/\bEDGE\b/g, 'CRYPTOBASE')
 
-    // 2. edge.app → cryptobaseatm.com
+    // edge.app → cryptobaseatm.com
     updated = updated.replace(/https?:\/\/edge\.app[^\s"']*/g, 'https://cryptobaseatm.com')
     updated = updated.replace(/\bedge\.app\b/g, 'cryptobaseatm.com')
 
-    // 3. Any iOS App Store link → Cryptobase ATM Wallet iOS URL
-    updated = updated.replace(/https?:\/\/apps\.apple\.com[^\s"']*/g, CRYPTOBASE_IOS_URL)
+    // Any iOS App Store link → Cryptobase ATM Wallet iOS URL
+    updated = updated.replace(
+      /https?:\/\/apps\.apple\.com[^\s"']*/g,
+      CRYPTOBASE_IOS_URL
+    )
 
-    // 4. Any Play Store link → Cryptobase ATM Wallet Android URL
-    updated = updated.replace(/https?:\/\/play\.google\.com\/store\/apps\/details[^\s"']*/g, CRYPTOBASE_ANDROID_URL)
+    // Any Play Store link → Cryptobase ATM Wallet Android URL
+    updated = updated.replace(
+      /https?:\/\/play\.google\.com\/store\/apps\/details[^\s"']*/g,
+      CRYPTOBASE_ANDROID_URL
+    )
 
     if (updated !== contents) {
       writeFileSafe(filePath, updated)
-      console.log('[branding] Patched localization file:', filePath)
+      console.log('[branding] Patched localization JSON:', filePath)
     }
   }
 
@@ -489,6 +512,49 @@ function patchLocalizationStrings() {
   }
 }
 
+// -----------------------------------------------------
+// STEP 8 — Localization TS branding (en_US.ts)
+// -----------------------------------------------------
+function patchLocalizationTsStrings() {
+  console.log('[branding] Patching en_US.ts strings...')
+
+  const filePath = path.join(rootDir, 'src', 'locales', 'en_US.ts')
+  if (!fs.existsSync(filePath)) {
+    console.warn('[branding] en_US.ts not found, skipping.')
+    return
+  }
+
+  let data = readFileSafe(filePath)
+
+  // Replace brand references:
+  data = data.replace(/\bEdge Wallet\b/g, 'Cryptobase Wallet')
+  data = data.replace(/\bEdge Account\b/g, 'Cryptobase Account')
+  data = data.replace(/\bEdge Login\b/g, 'Cryptobase Login')
+  data = data.replace(/\bEdge\b/g, 'Cryptobase')
+  data = data.replace(/\bEDGE\b/g, 'CRYPTOBASE')
+
+  // edge.app → cryptobaseatm.com
+  data = data.replace(/edge\.app/g, 'cryptobaseatm.com')
+
+  // Apple App Store link
+  data = data.replace(
+    /https:\/\/apps\.apple\.com\/[^"']+/g,
+    CRYPTOBASE_IOS_URL
+  )
+
+  // Play Store link
+  data = data.replace(
+    /https:\/\/play\.google\.com\/store\/apps\/details\?id=[^"']+/g,
+    CRYPTOBASE_ANDROID_URL
+  )
+
+  writeFileSafe(filePath, data)
+  console.log('[branding] en_US.ts patched.')
+}
+
+// -----------------------------------------------------
+// STEP 9 — Patch GettingStartedScene.tsx (logo branding)
+// -----------------------------------------------------
 function patchGettingStartedScene() {
   console.log('[branding] Patching GettingStartedScene.tsx...')
 
@@ -506,7 +572,10 @@ function patchGettingStartedScene() {
   )
 
   if (!fs.existsSync(src)) {
-    console.warn('[branding] Missing branded GettingStartedScene.tsx at:', src)
+    console.warn(
+      '[branding] Missing branded GettingStartedScene.tsx at:',
+      src
+    )
     return
   }
 
@@ -514,50 +583,189 @@ function patchGettingStartedScene() {
   console.log('[branding] Applied Cryptobase GettingStartedScene.tsx')
 }
 
-function patchLocalizationTsStrings() {
-  console.log('[branding] Patching en_US.ts strings…')
+// -----------------------------------------------------
+// STEP 10 — Patch Main.tsx (tabs, MoonPay, remove swap)
+// -----------------------------------------------------
+function patchMainTs() {
+  console.log('[branding] Patching Main.tsx (tabs & MoonPay)...')
 
-  const filePath = path.join(
-    rootDir,
-    'src',
-    'locales',
-    'en_US.ts'
-  )
-
-  if (!fs.existsSync(filePath)) {
-    console.warn('[branding] en_US.ts not found, skipping.')
+  const mainPath = path.join(rootDir, 'src', 'components', 'Main.tsx')
+  let contents = readFileSafe(mainPath)
+  if (!contents) {
+    console.warn('[branding] Main.tsx not found, skipping.')
     return
   }
 
-  let data = fs.readFileSync(filePath, 'utf8')
+  // 1) Insert MoonPay imports (if not already present)
+  if (!contents.includes("MoonPayBuyScene") && !contents.includes("MoonPaySellScene")) {
+    const marker =
+      "import { GuiPluginViewScene as GuiPluginViewSceneComponent } from './scenes/GuiPluginViewScene'\n"
+    if (contents.includes(marker)) {
+      contents = contents.replace(
+        marker,
+        marker +
+          "import MoonPayBuyScene from './scenes/MoonPayBuyScene'\n" +
+          "import MoonPaySellScene from './scenes/MoonPaySellScene'\n"
+      )
+      console.log('[branding] Inserted MoonPay scene imports in Main.tsx')
+    } else {
+      console.warn(
+        '[branding] Could not find GuiPluginViewScene import marker; MoonPay imports not added.'
+      )
+    }
+  }
 
-  // Replace "Edge" with "Cryptobase"
-  data = data.replace(/\bEdge\b/g, 'Cryptobase')
+  // 2) Patch EdgeBuyTabScreen initialRoute & first screen → MoonPayBuyScene
+  if (contents.includes('const EdgeBuyTabScreen: React.FC = () => {')) {
+    contents = contents.replace(
+      'initialRouteName="pluginListBuy"',
+      'initialRouteName="moonpayBuy"'
+    )
 
-  // Replace domain
-  data = data.replace(/edge\.app/g, 'cryptobaseatm.com')
+    const oldBuyFirstScreen =
+      `      <BuyStack.Screen\n` +
+      `        name="pluginListBuy"\n` +
+      `        component={RampCreateBuyScene}\n` +
+      `        options={firstSceneScreenOptions}\n` +
+      `      />`
 
-  // Replace Apple App Store link
-  data = data.replace(
-    /https:\/\/apps\.apple\.com\/[^"']+/g,
-    'https://apps.apple.com/app/cryptobase-atm-wallet/id6446409331'
-  )
+    const newBuyFirstScreen =
+      `      <BuyStack.Screen\n` +
+      `        name="moonpayBuy"\n` +
+      `        component={MoonPayBuyScene}\n` +
+      `        options={firstSceneScreenOptions}\n` +
+      `      />`
 
-  // Replace Play Store link
-  data = data.replace(
-    /https:\/\/play\.google\.com\/store\/apps\/details\?id=[^"']+/g,
-    'https://play.google.com/store/apps/details?id=com.cryptobase.atm.app'
-  )
+    if (contents.includes(oldBuyFirstScreen)) {
+      contents = contents.replace(oldBuyFirstScreen, newBuyFirstScreen)
+      console.log('[branding] Patched EdgeBuyTabScreen to use MoonPayBuyScene')
+    } else {
+      console.warn(
+        '[branding] Could not find pluginListBuy first screen block in EdgeBuyTabScreen.'
+      )
+    }
+  } else {
+    console.warn('[branding] EdgeBuyTabScreen not found in Main.tsx')
+  }
 
-  fs.writeFileSync(filePath, data)
-  console.log('[branding] en_US.ts patched successfully.')
+  // 3) Patch EdgeSellTabScreen initialRoute & first screen → MoonPaySellScene
+  if (contents.includes('const EdgeSellTabScreen: React.FC = () => {')) {
+    contents = contents.replace(
+      'initialRouteName="pluginListSell"',
+      'initialRouteName="moonpaySell"'
+    )
+
+    const oldSellFirstScreen =
+      `      <SellStack.Screen\n` +
+      `        name="pluginListSell"\n` +
+      `        component={RampCreateSellScene}\n` +
+      `        options={firstSceneScreenOptions}\n` +
+      `      />`
+
+    const newSellFirstScreen =
+      `      <SellStack.Screen\n` +
+      `        name="moonpaySell"\n` +
+      `        component={MoonPaySellScene}\n` +
+      `        options={firstSceneScreenOptions}\n` +
+      `      />`
+
+    if (contents.includes(oldSellFirstScreen)) {
+      contents = contents.replace(oldSellFirstScreen, newSellFirstScreen)
+      console.log('[branding] Patched EdgeSellTabScreen to use MoonPaySellScene')
+    } else {
+      console.warn(
+        '[branding] Could not find pluginListSell first screen block in EdgeSellTabScreen.'
+      )
+    }
+  } else {
+    console.warn('[branding] EdgeSellTabScreen not found in Main.tsx')
+  }
+
+  // 4) Force initialRouteName = 'extraTab' in EdgeTabs
+  const initialRouteLine =
+    "  const initialRouteName = defaultScreen === 'assets' ? 'walletsTab' : 'home'"
+  if (contents.includes(initialRouteLine)) {
+    contents = contents.replace(
+      initialRouteLine,
+      "  const initialRouteName = 'extraTab'"
+    )
+    console.log('[branding] Set initialRouteName to extraTab in EdgeTabs')
+  } else if (!contents.includes("const initialRouteName = 'extraTab'")) {
+    console.warn(
+      '[branding] Could not find initialRouteName line in EdgeTabs; not patched.'
+    )
+  }
+
+  // 5) Reorder Tabs: extraTab, home, walletsTab, buyTab, sellTab, devTab; remove swapTab
+  const oldTabsBlock =
+    `  return (\n` +
+    `    <Tabs.Navigator\n` +
+    `      initialRouteName={initialRouteName}\n` +
+    `      tabBar={props => <MenuTabs {...props} />}\n` +
+    `      screenOptions={{\n` +
+    `        headerShown: false\n` +
+    `      }}\n` +
+    `    >\n` +
+    `      <Tabs.Screen\n` +
+    `        name="home"\n` +
+    `        component={HomeScene}\n` +
+    `        options={{ ...defaultScreenOptions, ...firstSceneScreenOptions }}\n` +
+    `      />\n` +
+    `      <Tabs.Screen name="walletsTab" component={EdgeWalletsTabScreen} />\n` +
+    `      <Tabs.Screen name="buyTab" component={EdgeBuyTabScreen} />\n` +
+    `      <Tabs.Screen name="sellTab" component={EdgeSellTabScreen} />\n` +
+    `      <Tabs.Screen name="swapTab" component={EdgeSwapTabScreen} />\n` +
+    `      <Tabs.Screen name="extraTab" component={ExtraTabScene} />\n` +
+    `      <Tabs.Screen name="devTab" component={DevTestScene} />\n` +
+    `    </Tabs.Navigator>\n` +
+    `  )\n` +
+    `}\n`
+
+  const newTabsBlock =
+    `  return (\n` +
+    `    <Tabs.Navigator\n` +
+    `      initialRouteName={initialRouteName}\n` +
+    `      tabBar={props => <MenuTabs {...props} />}\n` +
+    `      screenOptions={{\n` +
+    `        headerShown: false\n` +
+    `      }}\n` +
+    `    >\n` +
+    `      <Tabs.Screen name="extraTab" component={ExtraTabScene} />\n` +
+    `      <Tabs.Screen\n` +
+    `        name="home"\n` +
+    `        component={HomeScene}\n` +
+    `        options={{ ...defaultScreenOptions, ...firstSceneScreenOptions }}\n` +
+    `      />\n` +
+    `      <Tabs.Screen name="walletsTab" component={EdgeWalletsTabScreen} />\n` +
+    `      <Tabs.Screen name="buyTab" component={EdgeBuyTabScreen} />\n` +
+    `      <Tabs.Screen name="sellTab" component={EdgeSellTabScreen} />\n` +
+    `      <Tabs.Screen name="devTab" component={DevTestScene} />\n` +
+    `    </Tabs.Navigator>\n` +
+    `  )\n` +
+    `}\n`
+
+  if (contents.includes(oldTabsBlock)) {
+    contents = contents.replace(oldTabsBlock, newTabsBlock)
+    console.log('[branding] Reordered tabs & removed swapTab in Main.tsx')
+  } else if (!contents.includes('name="swapTab"')) {
+    console.log(
+      '[branding] Tabs block already patched or swapTab missing; skipping tabs reorder.'
+    )
+  } else {
+    console.warn(
+      '[branding] Tabs block not found exactly as expected; manual check recommended.'
+    )
+  }
+
+  writeFileSafe(mainPath, contents)
+  console.log('[branding] Main.tsx patch complete.')
 }
 
 // -----------------------------------------------------
 // MAIN
 // -----------------------------------------------------
 function main() {
-  console.log('\n=== Applying Cryptobase Branding v4 ===\n')
+  console.log('\n=== Applying Cryptobase Branding v6 ===\n')
 
   if (!fs.existsSync(brandConfigPath)) {
     console.error('[branding] Missing brand-config.json')
@@ -574,8 +782,9 @@ function main() {
   applyIosIcons()
   applyAndroidIcons()
   patchGettingStartedScene()
-  patchLocalizationStrings()
+  patchLocalizationJson()
   patchLocalizationTsStrings()
+  patchMainTs()
 
   console.log('\n=== Cryptobase Branding Applied Successfully ===\n')
 }
