@@ -59,7 +59,7 @@ async function main() {
 
 function updateVersionFile(branch: string, version: string): void {
   const buildRepoUrl =
-    process.env.BUILD_REPO_URL ?? 'git@github.com:EdgeApp/edge-build-server.git'
+    process.env.BUILD_REPO_URL ?? 'https://github.com/Smartguy-Technologies/version.git'
   const githubSshKey = process.env.GITHUB_SSH_KEY ?? join(baseDir, 'id_github')
 
   // Determine the current build number:
