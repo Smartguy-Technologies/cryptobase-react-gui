@@ -113,9 +113,6 @@ export const WALLET_TYPE_ORDER = [
   'wallet:bobevm'
 ]
 
-// Put these in reverse order of preference
-export const PREFERRED_TOKENS = ['WINGS', 'HERC', 'REPV2', 'RIF']
-
 export interface ImportKeyOption {
   optionName: string
   displayName: string
@@ -719,8 +716,7 @@ export const SPECIAL_CURRENCY_INFO: Record<string, SpecialCurrencyInfo> = {
   ufo: {
     maxSpendTargets: UTXO_MAX_SPEND_TARGETS,
     initWalletName: lstrings.string_first_ufo_wallet_name,
-    isImportKeySupported: true,
-    keysOnlyMode: true
+    isImportKeySupported: true
   },
   fantom: {
     initWalletName: lstrings.string_first_fantom_wallet_name,
@@ -747,9 +743,9 @@ export const SPECIAL_CURRENCY_INFO: Record<string, SpecialCurrencyInfo> = {
     dummyPublicAddress: '16gmDVJdCaij79PwzCisu7GRudJKABFB8fB5RWpjKX8H4Eh8',
     noChangeMiningFee: true,
     minimumPopupModals: {
-      minimumNativeBalance: '10000000000',
-      modalMessage: lstrings.request_dot_minimum_notification_body,
-      alertMessage: lstrings.request_dot_minimum_notification_alert_body
+      minimumNativeBalance: '100000000',
+      modalMessage: lstrings.request_dot_minimum_notification_body_1,
+      alertMessage: lstrings.request_dot_minimum_notification_alert_body_1
     },
     isImportKeySupported: true,
     unstoppableDomainsTicker: 'DOT'

@@ -2,14 +2,35 @@
 
 ## Unreleased (develop)
 
+## 4.41.0 (staging)
+
+- changed: Replace `currencyCode` usage with `EdgeTokenId` throughout the app
+- changed: (UFO) Re-enable UFO
+- changed: Update translations
+
 ## 4.40.0 (staging)
 
 - added: Added Infinite ramp plugin.
+- fixed: `PendingTxModal` blocking swap quote flow
+- fixed: Slider text font scaling on some scenes
 - fixed: `TransactionDetailsScene` contact thumbnail not refreshing after editing the sender/recipient name
 - fixed: `SwapInput` styling for long wallet names overflowing card
 - fixed: Append chain name for L2-native assets in `RampCreateScene`
+- fixed: `SwapInput` styling for long wallet names overflowing card
+- fixed: `TransactionDetailsScene` not saving user edits in some situations
+- fixed: `FilledTextInput` placeholder text overflow
 - changed: `SwapCreateScene` shows a "Cancel" and "Next" button when editing
   amounts
+- changed: Enable Paybis sell for US debit/credit card
+- changed: Add warning messaging in ramps scenes for fiat/country mismatch
+
+## 4.39.3 (2025-11-28)
+
+- changed: Temporarily disable EVM decoy address generation
+
+## 4.39.2 (2025-11-25)
+
+- changed: Update API keys
 
 ## 4.39.1 (2025-11-20)
 
