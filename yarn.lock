@@ -9423,10 +9423,10 @@ ed25519@0.0.4:
     bindings "^1.2.1"
     nan "^2.0.9"
 
-edge-core-js@^2.37.0:
-  version "2.37.0"
-  resolved "https://registry.yarnpkg.com/edge-core-js/-/edge-core-js-2.37.0.tgz#1f215676acacbb694b78208145faf476c5ae3139"
-  integrity sha512-DwR9VJXmB8WgXuMaF8/iqsbGgE7XCNBre/L1dhrHe0eKHwqAPlU/tYXESxXygDOumlQN0x4qbDfzOUxs8NtpqQ==
+edge-core-js@^2.38.1:
+  version "2.38.1"
+  resolved "https://registry.yarnpkg.com/edge-core-js/-/edge-core-js-2.38.1.tgz#983aea8120b32f6b7165c066e4e8b74062989bc7"
+  integrity sha512-S3DGZJJKIWAOn2AL/MRJWq2RD/jXaDKEqGT0jl8KyWPwbiiNWS9QQXKEWc/UhK79i7y6UOEuq3iVeRflB4yyFQ==
   dependencies:
     aes-js "^3.1.0"
     base-x "^4.0.0"
@@ -9448,10 +9448,10 @@ edge-core-js@^2.37.0:
     yaob "^0.3.12"
     yavent "^0.1.5"
 
-edge-currency-accountbased@^4.67.0:
-  version "4.67.0"
-  resolved "https://registry.yarnpkg.com/edge-currency-accountbased/-/edge-currency-accountbased-4.67.0.tgz#15e984ceb2d32455fc5c163f1def47184bd80b74"
-  integrity sha512-TGvp/nQGjkMKwENY7f842GLnir0Q2k4SXkEzz6vATBiB/S6zMkNJW6sTmG9+VyVG3SP1KDoSinnjEL/oObTcdA==
+edge-currency-accountbased@^4.68.0:
+  version "4.68.0"
+  resolved "https://registry.yarnpkg.com/edge-currency-accountbased/-/edge-currency-accountbased-4.68.0.tgz#aa964d77ccd1b681c54e30b02c2bd3bcbf64f058"
+  integrity sha512-ZfsDKiromCqlNfh9aFGh4jzZCtSE9nL69LysUikjZOgzLB+nl8V68vFSUPFwTkzAHdBJ8IM2ut8ZNE8B8NQ9dQ==
   dependencies:
     "@chain-registry/client" "^2.0.28"
     "@chain-registry/types" "^2.0.28"
@@ -9520,10 +9520,10 @@ edge-currency-monero@^2.0.1:
     buffer "^5.0.6"
     uri-js "^3.0.2"
 
-edge-currency-plugins@^3.8.9:
-  version "3.8.9"
-  resolved "https://registry.yarnpkg.com/edge-currency-plugins/-/edge-currency-plugins-3.8.9.tgz#ba11e44acd2819ad84f417ce2a50965ac7ecd33f"
-  integrity sha512-iMSWm4W3GV9ZvSzlsCCDgQj3ZuNRAiahZyPy3qMP78LijGifENwahhTgV7oYnLsfvpQYQ+58VzQbGzJ3UOebYg==
+edge-currency-plugins@^3.8.10:
+  version "3.8.10"
+  resolved "https://registry.yarnpkg.com/edge-currency-plugins/-/edge-currency-plugins-3.8.10.tgz#b154ddf945287645bbb5ca0678187443a5f4ad2e"
+  integrity sha512-N7MaPL2YuIS8ADH9oKvcyvl772PePf5SPoCyu5IYmpXUDPe1204wNEbGgyGAyeAVnzzflIrjfnzuohjPaWgpaA==
   dependencies:
     "@bitcoinerlab/secp256k1" "^1.2.0"
     altcoin-js "^1.0.0"

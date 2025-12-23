@@ -41,7 +41,17 @@ export default [
 
       // Add our own rules:
       'edge/useAbortable-abort-check-param': 'error',
-      'edge/useAbortable-abort-check-usage': 'error'
+      'edge/useAbortable-abort-check-usage': 'error',
+
+      // Warn on styled() usage to encourage migration away from styled components
+      'no-restricted-syntax': [
+        'warn',
+        {
+          selector: "CallExpression[callee.name='styled']",
+          message:
+            'Avoid using styled() - prefer regular components with useTheme() and cacheStyles()'
+        }
+      ]
     }
   },
 
@@ -467,7 +477,7 @@ export default [
       'src/plugins/stake-plugins/generic/policyAdapters/EthereumKilnAdaptor.ts',
       'src/plugins/stake-plugins/generic/policyAdapters/GlifInfinityPoolAdapter.ts',
       'src/plugins/stake-plugins/generic/policyAdapters/TarotPoolAdaptor.ts',
-      'src/plugins/stake-plugins/generic/policyAdapters/ThorchainYieldAdaptor.ts',
+
       'src/plugins/stake-plugins/generic/util/EdgeWalletSigner.ts',
       'src/plugins/stake-plugins/generic/util/KilnApi.ts',
       'src/plugins/stake-plugins/generic/util/tarotUtils.ts',
