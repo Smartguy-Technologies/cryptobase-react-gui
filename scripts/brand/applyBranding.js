@@ -119,6 +119,9 @@ function mergeEnvWithCryptobaseAPIs() {
             letsexchangeApi,
             swapuzApi,
             bitcoinInit,
+            bitcoinCash,
+            ethereumInit,
+            litecoin,
             sentryDSN,
             sentryUrl,
             sentryAuth,
@@ -153,37 +156,66 @@ function mergeEnvWithCryptobaseAPIs() {
     }
   }
 
+  const makeApiKeyInit = apiKey => ({
+    apiKey: apiKey ?? ''
+  })
+  const makeNowNodesInit = apiKey => ({
+    apiKey: apiKey ?? '',
+    nowNodesApiKey: apiKey ?? ''
+  })
+
   // 4) Swap providers enabled (must be objects, not booleans)
-  envJson.CHANGE_NOW_INIT = envJson.CHANGE_NOW_INIT || {}
-  envJson.CHANGEHERO_INIT = envJson.CHANGEHERO_INIT || {}
-  envJson.EXOLIX_INIT = envJson.EXOLIX_INIT || {}
-  envJson.LETSEXCHANGE_INIT = envJson.LETSEXCHANGE_INIT || {}
-  envJson.SWAPUZ_INIT = envJson.SWAPUZ_INIT || {}
+  if (typeof cryptobaseAPIs.changenowApi === 'string') {
+    envJson.CHANGE_NOW_INIT = makeApiKeyInit(cryptobaseAPIs.changenowApi)
+  }
+  if (typeof cryptobaseAPIs.changeheroApi === 'string') {
+    envJson.CHANGEHERO_INIT = makeApiKeyInit(cryptobaseAPIs.changeheroApi)
+  }
+  if (typeof cryptobaseAPIs.exolixApi === 'string') {
+    envJson.EXOLIX_INIT = makeApiKeyInit(cryptobaseAPIs.exolixApi)
+  }
+  if (typeof cryptobaseAPIs.letsexchangeApi === 'string') {
+    envJson.LETSEXCHANGE_INIT = makeApiKeyInit(cryptobaseAPIs.letsexchangeApi)
+  }
+  if (typeof cryptobaseAPIs.swapuzApi === 'string') {
+    envJson.SWAPUZ_INIT = makeApiKeyInit(cryptobaseAPIs.swapuzApi)
+  }
 
   // 5) plugin API keys
   envJson.PLUGIN_API_KEYS = envJson.PLUGIN_API_KEYS || {}
-  if (cryptobaseAPIs.changeheroApi?.apiKey) {
-    envJson.PLUGIN_API_KEYS.changehero = cryptobaseAPIs.changeheroApi.apiKey
+  if (typeof cryptobaseAPIs.changeheroApi === 'string') {
+    envJson.PLUGIN_API_KEYS.changehero = makeApiKeyInit(
+      cryptobaseAPIs.changeheroApi
+    )
   }
-  if (cryptobaseAPIs.changenowApi?.apiKey) {
-    envJson.PLUGIN_API_KEYS.changenow = cryptobaseAPIs.changenowApi.apiKey
+  if (typeof cryptobaseAPIs.changenowApi === 'string') {
+    envJson.PLUGIN_API_KEYS.changenow = makeApiKeyInit(
+      cryptobaseAPIs.changenowApi
+    )
   }
-  if (cryptobaseAPIs.exolixApi?.apiKey) {
-    envJson.PLUGIN_API_KEYS.exolix = cryptobaseAPIs.exolixApi.apiKey
+  if (typeof cryptobaseAPIs.exolixApi === 'string') {
+    envJson.PLUGIN_API_KEYS.exolix = makeApiKeyInit(
+      cryptobaseAPIs.exolixApi
+    )
   }
-  if (cryptobaseAPIs.letsexchangeApi?.apiKey) {
-    envJson.PLUGIN_API_KEYS.letsexchange =
-      cryptobaseAPIs.letsexchangeApi.apiKey
+  if (typeof cryptobaseAPIs.letsexchangeApi === 'string') {
+    envJson.PLUGIN_API_KEYS.letsexchange = makeApiKeyInit(
+      cryptobaseAPIs.letsexchangeApi
+    )
   }
-  if (cryptobaseAPIs.swapuzApi?.apiKey) {
-    envJson.PLUGIN_API_KEYS.swapuz = cryptobaseAPIs.swapuzApi.apiKey
+  if (typeof cryptobaseAPIs.swapuzApi === 'string') {
+    envJson.PLUGIN_API_KEYS.swapuz = makeApiKeyInit(cryptobaseAPIs.swapuzApi)
   }
 
   // 6) Bitcoin init
-  if (cryptobaseAPIs.bitcoinInit?.nowNodeApiKey) {
-    envJson.BITCOIN_INIT = envJson.BITCOIN_INIT || {}
-    envJson.BITCOIN_INIT.nowNodeApiKey =
-      cryptobaseAPIs.bitcoinInit.nowNodeApiKey
+  if (typeof cryptobaseAPIs.bitcoinInit === 'string') {
+    envJson.BITCOIN_INIT = makeNowNodesInit(cryptobaseAPIs.bitcoinInit)
+  }
+  if (typeof cryptobaseAPIs.bitcoinCash === 'string') {
+    envJson.BITCOINCASH_INIT = makeNowNodesInit(cryptobaseAPIs.bitcoinCash)
+  }
+  if (typeof cryptobaseAPIs.litecoin === 'string') {
+    envJson.LITECOIN_INIT = makeNowNodesInit(cryptobaseAPIs.litecoin)
   }
 
   // 7) Sentry
