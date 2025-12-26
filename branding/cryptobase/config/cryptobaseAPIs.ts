@@ -1,14 +1,20 @@
 export const airbitzAPI = '98E1DF86C1D2CEBA7592DBB9CB357970BEFCD37C'
-export const bitcoinInit = { nowNodeApiKey: '' }
-export const changeheroApi = { apiKey: 'b04e085dfa184b9aba35d989ecfdd870' }
-export const changenowApi = { apiKey: '4117cf9c020adefa62b207fa8a9a7a6b54d196b6ec3f5f72e22ea1c7f496b9db' }
+export const bitcoinInit = ''
+export const bitcoinCash = ''
+export const changeheroApi = 'b04e085dfa184b9aba35d989ecfdd870'
+export const changenowApi =
+  '4117cf9c020adefa62b207fa8a9a7a6b54d196b6ec3f5f72e22ea1c7f496b9db'
 export const coingeckoApi = '0b3d29d9f64b97a4e30e05c1d91c8827'
-export const exolixApi = { apiKey: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IndsK2NyeXB0b2Jhc2VAZWRnZS5hcHAiLCJzdWIiOjI3MjUyLCJpYXQiOjE2ODEyNTg5MzYsImV4cCI6MTgzOTA0NjkzNn0.iasMFTwvzJ8dbkDjaMKKLlHZxNgiGdn12zh4WWwm9eM' }
-export const letsexchangeApi = { apiKey: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IndsK2NyeXB0b2Jhc2VAZWRnZS5hcHAiLCJzdWIiOjI3MjUyLCJpYXQiOjE2ODEyNTg5MzYsImV4cCI6MTgzOTA0NjkzNn0.iasMFTwvzJ8dbkDjaMKKLlHZxNgiGdn12zh4WWwm9eM' }
+export const ethereumInit = ''
+export const exolixApi =
+  'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IndsK2NyeXB0b2Jhc2VAZWRnZS5hcHAiLCJzdWIiOjI3MjUyLCJpYXQiOjE2ODEyNTg5MzYsImV4cCI6MTgzOTA0NjkzNn0.iasMFTwvzJ8dbkDjaMKKLlHZxNgiGdn12zh4WWwm9eM'
+export const letsexchangeApi =
+  'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IndsK2NyeXB0b2Jhc2VAZWRnZS5hcHAiLCJzdWIiOjI3MjUyLCJpYXQiOjE2ODEyNTg5MzYsImV4cCI6MTgzOTA0NjkzNn0.iasMFTwvzJ8dbkDjaMKKLlHZxNgiGdn12zh4WWwm9eM'
+export const litecoin = ''
 export const moonpayApi = 'pk_live_NWOV9M89TmiXNafI1qWZfhQG4eOk3Q2'
 export const sentryDSN = 'https://b2ee5d8a5503417fafebbdfef147469c@o4507433514500096.ingest.us.sentry.io/4507433528328192'
 export const sentryUrl = 'https://sentry.io'
 export const sentryAuth = '764174e7da3fc902dede70b39d07f253bfa9fa1f4cbf5e615e3857244b82c43e'
 export const sentryOSlug = 'cryptobase-atm'
 export const sentryPSlug = 'javascript-react'
-export const swapuzApi = { apiKey: 'e9031d9e-fd4d-482a-a048-7687671f8648' }
+export const swapuzApi = 'e9031d9e-fd4d-482a-a048-7687671f8648'
