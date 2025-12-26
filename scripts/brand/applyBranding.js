@@ -31,7 +31,25 @@ const brandConfigPath = path.join(brandingRoot, 'brand-config.json')
 const CRYPTOBASE_IOS_URL =
   'https://apps.apple.com/app/cryptobase-atm-wallet/id6446409331'
 const CRYPTOBASE_ANDROID_URL =
-  'https://play.google.com/store/apps/details?id=com.cryptobase.atm.app'
+  'https://play.google.com/store/apps/details?id=com.cryptobase.wallet'
+
+const args = process.argv.slice(2)
+const options = {
+  androidAppId: undefined
+}
+
+for (let i = 0; i < args.length; i++) {
+  const arg = args[i]
+  if (arg === '--android-app-id') {
+    const value = args[i + 1]
+    if (value == null || value.startsWith('--')) {
+      console.error('[branding] Missing value for --android-app-id')
+      process.exit(1)
+    }
+    options.androidAppId = value
+    i += 1
+  }
+}
 
 // -----------------------------------------------------
 // UTILITIES
@@ -310,11 +328,27 @@ function applyThemeAndConfigTs() {
   copyFileSafe(templateSrc, destAppConfig)
 }
 
+function patchAndroidAppIdOverride(androidAppId) {
+  const configPath = path.join(rootDir, 'src', 'theme', 'cryptobaseConfig.ts')
+  let contents = readFileSafe(configPath)
+  if (!contents) {
+    console.warn('[branding] cryptobaseConfig.ts missing, skipping appId patch.')
+    return
+  }
+
+  contents = contents.replace(
+    /appId:\s*'[^']*'/,
+    `appId: '${androidAppId}'`
+  )
+  writeFileSafe(configPath, contents)
+  console.log('[branding] Patched cryptobaseConfig.ts appId →', androidAppId)
+}
+
 // -----------------------------------------------------
 // STEP 4 — Android native branding
 // -----------------------------------------------------
-function updateAndroidNative(brandMeta) {
-  const bundleId = brandMeta.bundleId
+function updateAndroidNative(brandMeta, androidAppId) {
+  const bundleId = androidAppId ?? brandMeta.bundleId
   const appName = brandMeta.appName
 
   const buildGradle = path.join(rootDir, 'android', 'app', 'build.gradle')
@@ -805,11 +839,15 @@ function main() {
   }
 
   const brandMeta = loadJson(brandConfigPath)
+  const androidAppId = options.androidAppId
 
   mergeEnvWithCryptobaseAPIs()
   patchEnvConfigTs()
   applyThemeAndConfigTs()
-  updateAndroidNative(brandMeta)
+  if (androidAppId != null) {
+    patchAndroidAppIdOverride(androidAppId)
+  }
+  updateAndroidNative(brandMeta, androidAppId)
   updateIosNative(brandMeta)
   applyIosIcons()
   applyAndroidIcons()
