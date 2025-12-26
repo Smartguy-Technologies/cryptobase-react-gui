@@ -91,3 +91,10 @@ It makes `yarn brand:cryptobase` a full rebrand step:
 
 This keeps your business logic and UI on top of the upstream Edge app with a clean,
 automated branding layer.
+
+
+
+Full application script:
+  yarn && yarn brand:cryptobase && yarn prepare && yarn gitVersionFile && yarn updateVersion && yarn deploy edge ios master
+  yarn && yarn brand:cryptobase:android && yarn prepare && yarn gitVersionFile && yarn updateVersion && yarn deploy edge android master
+  
