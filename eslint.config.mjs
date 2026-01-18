@@ -325,7 +325,7 @@ export default [
       'src/components/services/ContactsLoader.ts',
       'src/components/services/DeepLinkingManager.tsx',
       'src/components/services/EdgeContextCallbackManager.tsx',
-      'src/components/services/EdgeCoreManager.tsx',
+
       'src/components/services/FioService.ts',
       'src/components/services/LoanManagerService.ts',
       'src/components/services/NetworkActivity.ts',
@@ -416,7 +416,7 @@ export default [
       'src/controllers/action-queue/runtime/executeActionProgram.ts',
       'src/controllers/edgeProvider/client/edgeProviderBridge.ts',
       'src/controllers/edgeProvider/client/pendingList.ts',
-      'src/controllers/edgeProvider/EdgeProviderServer.tsx',
+
       'src/controllers/loan-manager/borrowPluginConfig.ts',
       'src/controllers/loan-manager/redux/actions.ts',
       'src/controllers/loan-manager/util/waitForLoanAccountSync.ts',

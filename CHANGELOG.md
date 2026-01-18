@@ -2,10 +2,27 @@
 
 ## Unreleased (develop)
 
+- added: `chooseCaip19Asset` EdgeProvider API for precise wallet selection using CAIP-19 identifiers
+- added: Pass OS and app version details to core context for v2/coreRollup endpoint
+- changed: Append chain names to token codes in RampCreateScene
+
 ## 4.42.0 (staging)
 
 - added: Zcash buy/sell support with Banxa
+- changed: ramps: Infinite buy support according to new API (disabled temporarily)
 - changed: Optimize login performance.
+- changed: Update Monero LWS server name to "Edge LWS"
+- fixed: Light account/backup reminder notification banner sometimes missing on login
+- fixed: ramps: Various Infinite UI/UX issues
+- fixed: Search keyboard not dismissing when submitting search
+- fixed: Auto-correct not disabled for search input
+- fixed: Inaccurate camera permissions detection
+- fixed: In-app review for iOS 18+
+
+## 4.41.1 (2025-12-29)
+
+- fixed: Fix Rango EVM swaps
+- fixed: Fix Ethereum USDT swaps
 
 ## 4.41.0 (2025-12-21)
 
