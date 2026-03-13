@@ -40,6 +40,8 @@ export default [
       'react-native/sort-styles': 'off',
 
       // Add our own rules:
+      'edge/react-fc-component-definition': 'warn',
+      'edge/react-render-function-definition': 'warn',
       'edge/useAbortable-abort-check-param': 'error',
       'edge/useAbortable-abort-check-usage': 'error',
 
@@ -81,7 +83,6 @@ export default [
 
       'scripts/updateVersion.ts',
       'src/actions/BackupModalActions.tsx',
-      'src/actions/CategoriesActions.ts',
 
       'src/actions/CreateWalletActions.tsx',
 
@@ -197,7 +198,6 @@ export default [
       'src/components/modals/ScanModal.tsx',
       'src/components/modals/StateProvinceListModal.tsx',
 
-      'src/components/modals/SwapVerifyTermsModal.tsx',
       'src/components/modals/TextInputModal.tsx',
       'src/components/modals/TransferModal.tsx',
       'src/components/modals/WalletListMenuModal.tsx',
@@ -228,30 +228,24 @@ export default [
       'src/components/progress-indicators/StepProgressBar.tsx',
 
       'src/components/rows/CryptoFiatAmountRow.tsx',
-      'src/components/rows/CurrencyRow.tsx',
 
       'src/components/rows/EdgeRow.tsx',
 
       'src/components/rows/PaymentMethodRow.tsx',
       'src/components/rows/SwapProviderRow.tsx',
       'src/components/rows/TxCryptoAmountRow.tsx',
-      'src/components/scenes/AssetSettingsScene.tsx',
+
       'src/components/scenes/ChangeMiningFeeScene.tsx',
-      'src/components/scenes/ChangePasswordScene.tsx',
-      'src/components/scenes/ChangePinScene.tsx',
-      'src/components/scenes/ChangeUsernameScene.tsx',
-      'src/components/scenes/CoinRankingDetailsScene.tsx',
 
       'src/components/scenes/ConfirmScene.tsx',
       'src/components/scenes/CreateWalletAccountSelectScene.tsx',
       'src/components/scenes/CreateWalletAccountSetupScene.tsx',
       'src/components/scenes/CreateWalletCompletionScene.tsx',
-      'src/components/scenes/CreateWalletEditNameScene.tsx',
+
       'src/components/scenes/CreateWalletImportOptionsScene.tsx',
       'src/components/scenes/CreateWalletImportScene.tsx',
 
       'src/components/scenes/CurrencyNotificationScene.tsx',
-      'src/components/scenes/CurrencySettingsScene.tsx',
       'src/components/scenes/DefaultFiatSettingScene.tsx',
       'src/components/scenes/DuressModeHowToScene.tsx',
       'src/components/scenes/DuressModeSettingScene.tsx',
@@ -284,24 +278,21 @@ export default [
       'src/components/scenes/Loans/LoanDetailsScene.tsx',
       'src/components/scenes/Loans/LoanManageScene.tsx',
       'src/components/scenes/Loans/LoanStatusScene.tsx',
-      'src/components/scenes/LoginScene.tsx',
+
       'src/components/scenes/ManageTokensScene.tsx',
       'src/components/scenes/MigrateWalletCalculateFeeScene.tsx',
       'src/components/scenes/MigrateWalletCompletionScene.tsx',
 
       'src/components/scenes/NotificationCenterScene.tsx',
       'src/components/scenes/NotificationScene.tsx',
-      'src/components/scenes/OtpRepairScene.tsx',
-      'src/components/scenes/OtpSettingsScene.tsx',
-      'src/components/scenes/PasswordRecoveryScene.tsx',
-      'src/components/scenes/PromotionSettingsScene.tsx',
 
-      'src/components/scenes/SecurityAlertsScene.tsx',
+      'src/components/scenes/OtpSettingsScene.tsx',
+
+      'src/components/scenes/PromotionSettingsScene.tsx',
 
       'src/components/scenes/SpendingLimitsScene.tsx',
       'src/components/scenes/Staking/EarnScene.tsx',
 
-      'src/components/scenes/SwapProcessingScene.tsx',
       'src/components/scenes/SwapSettingsScene.tsx',
       'src/components/scenes/SwapSuccessScene.tsx',
       'src/components/scenes/SweepPrivateKeyCalculateFeeScene.tsx',
@@ -311,7 +302,6 @@ export default [
       'src/components/scenes/TransactionDetailsScene.tsx',
 
       'src/components/scenes/TransactionsExportScene.tsx',
-      'src/components/scenes/UpgradeUsernameScreen.tsx',
 
       'src/components/scenes/WalletRestoreScene.tsx',
       'src/components/scenes/WcConnectionsScene.tsx',
@@ -338,7 +328,7 @@ export default [
       'src/components/services/WalletConnectService.tsx',
       'src/components/services/WalletLifecycle.ts',
       'src/components/services/WipeLogsService.tsx',
-      'src/components/settings/SettingsHeaderRow.tsx',
+
       'src/components/settings/SettingsLabelRow.tsx',
       'src/components/settings/SettingsRadioRow.tsx',
       'src/components/settings/SettingsRow.tsx',
@@ -363,8 +353,6 @@ export default [
       'src/components/themed/LineTextDivider.tsx',
       'src/components/themed/MainButton.tsx',
       'src/components/themed/ManageTokensRow.tsx',
-      'src/components/themed/MaybeCustomServersSetting.tsx',
-      'src/components/themed/MaybeMoneroUserSettings.tsx',
       'src/components/themed/MenuTabs.tsx',
       'src/components/themed/ModalParts.tsx',
       'src/components/themed/PinDots.tsx',
@@ -373,7 +361,7 @@ export default [
 
       'src/components/themed/SearchFooter.tsx',
       'src/components/themed/SelectableRow.tsx',
-      'src/components/themed/SendFromFioRows.tsx',
+
       'src/components/themed/ShareButtons.tsx',
 
       'src/components/themed/Slider.tsx',
@@ -384,7 +372,7 @@ export default [
       'src/components/themed/Title.tsx',
       'src/components/themed/TransactionListComponents.tsx',
       'src/components/themed/TransactionListRow.tsx',
-      'src/components/themed/TransactionListTop.tsx',
+
       'src/components/themed/VectorIcon.tsx',
       'src/components/themed/WalletList.tsx',
 
@@ -436,7 +424,7 @@ export default [
       'src/hooks/useLayout.ts',
       'src/hooks/useLayoutOnce.ts',
       'src/hooks/useMount.ts',
-      'src/hooks/usePendingPress.ts',
+
       'src/hooks/useRefresher.ts',
       'src/hooks/useScrollToEnd.ts',
       'src/hooks/useSharedEvent.ts',
@@ -450,7 +438,7 @@ export default [
       'src/locales/strings.ts',
       'src/plugins/borrow-plugins/common/ApprovableCall.ts',
       'src/plugins/borrow-plugins/common/cleaners/asBigNumber.ts',
-      'src/plugins/borrow-plugins/plugins/aave/AaveBorrowEngineFactory.ts',
+
       'src/plugins/borrow-plugins/plugins/aave/index.ts',
 
       'src/plugins/gui/providers/bityProvider.ts',

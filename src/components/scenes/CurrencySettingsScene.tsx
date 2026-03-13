@@ -6,7 +6,9 @@ import { useDisplayDenom } from '../../hooks/useDisplayDenom'
 import { lstrings } from '../../locales/strings'
 import { useDispatch, useSelector } from '../../types/reactRedux'
 import type { EdgeAppSceneProps } from '../../types/routerTypes'
+import { EdgeCard } from '../cards/EdgeCard'
 import { SceneWrapper } from '../common/SceneWrapper'
+import { SceneContainer } from '../layout/SceneContainer'
 import { cacheStyles, type Theme, useTheme } from '../services/ThemeContext'
 import { SettingsHeaderRow } from '../settings/SettingsHeaderRow'
 import { SettingsRadioRow } from '../settings/SettingsRadioRow'
@@ -17,6 +19,7 @@ import {
   MaybeElectrumSetting
 } from '../themed/MaybeCustomServersSetting'
 import { MaybeMoneroUserSettings } from '../themed/MaybeMoneroUserSettings'
+import { MaybePrivateNetworkingSetting } from '../themed/MaybePrivateNetworkingSetting'
 
 export interface CurrencySettingsParams {
   currencyInfo: EdgeCurrencyInfo
@@ -24,7 +27,7 @@ export interface CurrencySettingsParams {
 
 interface Props extends EdgeAppSceneProps<'currencySettings'> {}
 
-export function CurrencySettingsScene(props: Props) {
+export const CurrencySettingsScene: React.FC<Props> = props => {
   const { route } = props
   const { currencyInfo } = route.params
   const { currencyCode, denominations, pluginId } = currencyInfo
@@ -39,45 +42,50 @@ export function CurrencySettingsScene(props: Props) {
   ).multiplier
   const currencyConfig = account.currencyConfig[pluginId]
 
-  function renderDenominations() {
-    return (
-      <>
-        <SettingsHeaderRow label={lstrings.settings_denominations_title} />
-        {denominations.map(denomination => {
-          const key = denomination.multiplier
-          const isSelected = key === selectedDenominationMultiplier
-          const handlePress = async () => {
-            await dispatch(
-              setDenominationKeyRequest(pluginId, currencyCode, denomination)
-            )
-          }
-
-          return (
-            <SettingsRadioRow
-              key={key}
-              value={isSelected}
-              onPress={handlePress}
-            >
-              <UnscaledText style={styles.labelText}>
-                <UnscaledText style={styles.symbolText}>
-                  {denomination.symbol}
-                </UnscaledText>
-                {' - ' + denomination.name}
-              </UnscaledText>
-            </SettingsRadioRow>
-          )
-        })}
-      </>
-    )
-  }
-
   return (
     <SceneWrapper scroll>
-      {denominations.length > 1 ? renderDenominations() : null}
-      <MaybeBlockbookSetting currencyConfig={currencyConfig} />
-      <MaybeCustomServersSetting currencyConfig={currencyConfig} />
-      <MaybeElectrumSetting currencyConfig={currencyConfig} />
-      <MaybeMoneroUserSettings currencyConfig={currencyConfig} />
+      <SceneContainer>
+        {denominations.length > 1 ? (
+          <>
+            <SettingsHeaderRow label={lstrings.settings_denominations_title} />
+            <EdgeCard sections>
+              {denominations.map(denomination => {
+                const key = denomination.multiplier
+                const isSelected = key === selectedDenominationMultiplier
+                const handlePress = async (): Promise<void> => {
+                  await dispatch(
+                    setDenominationKeyRequest(
+                      pluginId,
+                      currencyCode,
+                      denomination
+                    )
+                  )
+                }
+
+                return (
+                  <SettingsRadioRow
+                    key={key}
+                    value={isSelected}
+                    onPress={handlePress}
+                  >
+                    <UnscaledText style={styles.labelText}>
+                      <UnscaledText style={styles.symbolText}>
+                        {denomination.symbol}
+                      </UnscaledText>
+                      {' - ' + denomination.name}
+                    </UnscaledText>
+                  </SettingsRadioRow>
+                )
+              })}
+            </EdgeCard>
+          </>
+        ) : null}
+        <MaybePrivateNetworkingSetting currencyConfig={currencyConfig} />
+        <MaybeBlockbookSetting currencyConfig={currencyConfig} />
+        <MaybeCustomServersSetting currencyConfig={currencyConfig} />
+        <MaybeElectrumSetting currencyConfig={currencyConfig} />
+        <MaybeMoneroUserSettings currencyConfig={currencyConfig} />
+      </SceneContainer>
     </SceneWrapper>
   )
 }

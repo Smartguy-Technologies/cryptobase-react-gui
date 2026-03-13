@@ -49,6 +49,7 @@ import { EdgeHeader } from './navigation/EdgeHeader'
 import { PluginBackButton } from './navigation/GuiPluginBackButton'
 import { HeaderBackground } from './navigation/HeaderBackground'
 import { HeaderTextButton } from './navigation/HeaderTextButton'
+import { HeaderTitle } from './navigation/HeaderTitle'
 import { ParamHeaderTitle } from './navigation/ParamHeaderTitle'
 import { SideMenuButton } from './navigation/SideMenuButton'
 import { TransactionDetailsTitle } from './navigation/TransactionDetailsTitle'
@@ -70,6 +71,7 @@ import { CreateWalletImportScene as CreateWalletImportSceneComponent } from './s
 import { CreateWalletSelectCryptoScene as CreateWalletSelectCryptoSceneComponent } from './scenes/CreateWalletSelectCryptoScene'
 import { CurrencyNotificationScene as CurrencyNotificationSceneComponent } from './scenes/CurrencyNotificationScene'
 import { CurrencySettingsScene as CurrencySettingsSceneComponent } from './scenes/CurrencySettingsScene'
+import { DebugScene as DebugSceneComponent } from './scenes/DebugScene'
 import { DefaultFiatSettingScene as DefaultFiatSettingSceneComponent } from './scenes/DefaultFiatSettingScene'
 import { DevTestScene } from './scenes/DevTestScene'
 import { DuressModeHowToScene as DuressModeHowToSceneComponent } from './scenes/DuressModeHowToScene'
@@ -96,6 +98,7 @@ import { FioSentRequestDetailsScene as FioSentRequestDetailsSceneComponent } fro
 import { FioStakingChangeScene as FioStakingChangeSceneComponent } from './scenes/Fio/FioStakingChangeScene'
 import { FioStakingOverviewScene as FioStakingOverviewSceneComponent } from './scenes/Fio/FioStakingOverviewScene'
 import { GettingStartedScene } from './scenes/GettingStartedScene'
+import { GiftCardAccountInfoScene as GiftCardAccountInfoSceneComponent } from './scenes/GiftCardAccountInfoScene'
 import { GiftCardListScene as GiftCardListSceneComponent } from './scenes/GiftCardListScene'
 import { GiftCardMarketScene as GiftCardMarketSceneComponent } from './scenes/GiftCardMarketScene'
 import { GiftCardPurchaseScene as GiftCardPurchaseSceneComponent } from './scenes/GiftCardPurchaseScene'
@@ -122,6 +125,7 @@ import { NotificationScene as NotificationSceneComponent } from './scenes/Notifi
 import { OtpRepairScene as OtpRepairSceneComponent } from './scenes/OtpRepairScene'
 import { OtpSettingsScene as OtpSettingsSceneComponent } from './scenes/OtpSettingsScene'
 import { ChangeRecoveryScene as ChangeRecoverySceneComponent } from './scenes/PasswordRecoveryScene'
+import { PrivacySettingsScene as PrivacySettingsSceneComponent } from './scenes/PrivacySettingsScene'
 import { PromotionSettingsScene as PromotionSettingsSceneComponent } from './scenes/PromotionSettingsScene'
 import { RampBankFormScene as RampBankFormSceneComponent } from './scenes/RampBankFormScene'
 import { RampBankRoutingDetailsScene as RampBankRoutingDetailsSceneComponent } from './scenes/RampBankRoutingDetailsScene'
@@ -174,6 +178,7 @@ import { MenuTabs } from './themed/MenuTabs'
 import { SideMenu } from './themed/SideMenu'
 
 const AssetSettingsScene = ifLoggedIn(AssetSettingsSceneComponent)
+const PrivacySettingsScene = ifLoggedIn(PrivacySettingsSceneComponent)
 const BuyScene = ifLoggedIn(BuySceneComponent)
 const ChangeMiningFeeScene = ifLoggedIn(ChangeMiningFeeSceneComponent)
 const ChangePasswordScene = ifLoggedIn(ChangePasswordSceneComponent)
@@ -205,6 +210,7 @@ const CreateWalletSelectFiatScene = ifLoggedIn(
 )
 const CurrencyNotificationScene = ifLoggedIn(CurrencyNotificationSceneComponent)
 const CurrencySettingsScene = ifLoggedIn(CurrencySettingsSceneComponent)
+const DebugScene = ifLoggedIn(DebugSceneComponent)
 const DefaultFiatSettingScene = ifLoggedIn(DefaultFiatSettingSceneComponent)
 const EarnScene = ifLoggedIn(EarnSceneComponent)
 const EdgeLoginScene = ifLoggedIn(EdgeLoginSceneComponent)
@@ -242,6 +248,7 @@ const FioStakingChangeScene = ifLoggedIn(FioStakingChangeSceneComponent)
 const FioStakingOverviewScene = ifLoggedIn(FioStakingOverviewSceneComponent)
 const GuiPluginViewScene = ifLoggedIn(GuiPluginViewSceneComponent)
 const HomeScene = ifLoggedIn(HomeSceneComponent)
+const GiftCardAccountInfoScene = ifLoggedIn(GiftCardAccountInfoSceneComponent)
 const GiftCardListScene = ifLoggedIn(GiftCardListSceneComponent)
 const GiftCardMarketScene = ifLoggedIn(GiftCardMarketSceneComponent)
 const GiftCardPurchaseScene = ifLoggedIn(GiftCardPurchaseSceneComponent)
@@ -797,6 +804,14 @@ const EdgeAppStack: React.FC = () => {
         }}
       />
       <AppStack.Screen
+        name="privacySettings"
+        component={PrivacySettingsScene}
+        options={{
+          title: lstrings.settings_privacy_settings,
+          headerRight: () => null
+        }}
+      />
+      <AppStack.Screen
         name="currencySettings"
         component={CurrencySettingsScene}
         options={{
@@ -941,6 +956,15 @@ const EdgeAppStack: React.FC = () => {
         name="fioStakingOverview"
         component={FioStakingOverviewScene}
       />
+      <AppStack.Screen
+        name="giftCardAccountInfo"
+        component={GiftCardAccountInfoScene}
+        options={{
+          headerTitle: () => (
+            <HeaderTitle title={lstrings.gift_card_account_info_title} />
+          )
+        }}
+      />
       <AppStack.Screen name="giftCardList" component={GiftCardListScene} />
       <AppStack.Screen name="giftCardMarket" component={GiftCardMarketScene} />
       <AppStack.Screen
@@ -1083,6 +1107,13 @@ const EdgeAppStack: React.FC = () => {
         options={{ headerShown: false }}
       />
       <AppStack.Screen name="send2" component={SendScene2} />
+      <AppStack.Screen
+        name="debugSettings"
+        component={DebugScene}
+        options={{
+          title: lstrings.settings_debug_title
+        }}
+      />
       <AppStack.Screen
         name="settingsOverview"
         component={SettingsScene}
@@ -1270,6 +1301,11 @@ export const Main: React.FC = () => {
                 return <LoginScene {...props} />
               }}
             </RootStack.Screen>
+
+            <RootStack.Screen
+              name="securityAlerts"
+              component={SecurityAlertsScene}
+            />
           </RootStack.Navigator>
           {navigation == null ? null : (
             <DeepLinkingManager navigation={navigation} />

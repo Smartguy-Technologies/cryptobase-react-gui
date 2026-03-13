@@ -3,7 +3,7 @@ import type { EdgeCorePluginsInit } from 'edge-core-js'
 import { ENV } from '../env'
 
 export const currencyPlugins: EdgeCorePluginsInit = {
-  // // edge-currency-accountbased:
+  // edge-currency-accountbased:
   abstract: ENV.ABSTRACT_INIT,
   algorand: ENV.ALGORAND_INIT,
   amoy: ENV.AMOY_INIT,
@@ -17,6 +17,7 @@ export const currencyPlugins: EdgeCorePluginsInit = {
   botanix: ENV.BOTANIX_INIT,
   cardano: ENV.CARDANO_INIT,
   cardanotestnet: ENV.CARDANO_TESTNET_INIT,
+  mayachain: ENV.MAYACHAIN_INIT,
   celo: ENV.CELO_INIT,
   coreum: ENV.COREUM_INIT,
   cosmoshub: ENV.COSMOSHUB_INIT,
@@ -35,6 +36,9 @@ export const currencyPlugins: EdgeCorePluginsInit = {
   hyperevm: ENV.HYPEREVM_INIT,
   liberland: ENV.LIBERLAND_INIT,
   liberlandtestnet: false,
+  opbnb: ENV.OPBNB_INIT,
+  monad: ENV.MONAD_INIT,
+  nym: ENV.NYM_INIT,
   optimism: ENV.OPTIMISM_INIT,
   osmosis: ENV.OSMOSIS_INIT,
   piratechain: true,
@@ -93,8 +97,10 @@ export const swapPlugins = {
   godex: ENV.GODEX_INIT,
   lifi: ENV.LIFI_INIT,
   letsexchange: ENV.LETSEXCHANGE_INIT,
+  nexchange: ENV.NEXCHANGE_INIT,
   sideshift: ENV.SIDESHIFT_INIT,
   swapuz: ENV.SWAPUZ_INIT,
+  xgram: ENV.XGRAM_INIT,
 
   // Defi Swaps
   bridgeless: true,
@@ -103,6 +109,7 @@ export const swapPlugins = {
   mayaprotocol: ENV.MAYA_PROTOCOL_INIT,
   thorchain: ENV.THORCHAIN_INIT,
   swapkit: ENV.SWAPKIT_INIT,
+  swapkitv3: ENV.SWAPKITV3_INIT,
   tombSwap: ENV.TOMB_SWAP_INIT,
   unizen: false,
   velodrome: true,

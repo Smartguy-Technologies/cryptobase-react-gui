@@ -220,6 +220,11 @@ const strings = {
   fragment_request_address_uri_copied:
     'Request address URI copied to clipboard',
   fragment_copied: 'Successfully copied to clipboard',
+  fragment_aggregate_id: 'Aggregate ID',
+  fragment_copy_aggregate_id: 'Copy Aggregate ID',
+  fragment_copy_event_id: 'Copy Event ID',
+  fragment_event_id: 'Event ID',
+  fragment_error_report_id_copied: 'Error report ID copied',
   request_minimum_notification_title: 'Minimum Balance Required',
   request_xrp_minimum_notification_body_1xrp:
     'Ripple (XRP) wallets require a 1 XRP minimum balance. You must deposit at least 1 XRP to this address before this wallet will show a balance or transactions. 1 XRP will be unspendable for the lifetime of this wallet address.',
@@ -438,6 +443,8 @@ const strings = {
   help_official_site_text: 'Learn more about %1$s',
   loading: 'Loading…',
   percent_complete_1s: '%1$s Complete',
+  sync_status_title: 'Sync in Progress',
+  sync_status_blocks: 'Syncing blocks %1$s/%2$s',
   validating: 'Validating…',
   high_fee_warning_confirm_send: 'Confirm Send',
   mining_fee_custom_label_choice: 'Custom',
@@ -506,8 +513,28 @@ const strings = {
   settings_button_change_password: 'Change Password',
   settings_button_change_username: 'Change Username',
   settings_developer_mode: 'Developer Mode',
+  settings_debug_title: 'Debug',
+  settings_debug_nodes_servers: 'Nodes & Servers',
+  settings_debug_engine_dump: 'Engine dataDump',
+  settings_debug_logs: 'Info/Activity Logs',
+  settings_debug_refresh_logs: 'Refresh',
+  settings_debug_active_servers: 'Active Servers',
+  settings_debug_info_servers: 'Info-Server Added',
+  settings_debug_custom_servers: 'User Added',
+  settings_debug_user_settings: 'User Settings',
+  settings_debug_network_config: 'Network Config',
+  settings_debug_no_wallets: 'No wallets available',
+  settings_debug_info_log: 'Info Log',
+  settings_debug_activity_log: 'Activity Log',
+  settings_debug_no_logs: 'No logs available',
+  settings_debug_info_log_dev: 'Not available in __DEV__',
+  settings_debug_long_press_hint: 'Long press any header to copy',
+  settings_debug_copied_1s: 'Copied: %1$s',
   settings_verbose_logging: 'Verbose Logging',
-  settings_dark_theme: 'Dark Theme',
+  settings_theme: 'Theme',
+  settings_theme_light: 'Light',
+  settings_theme_dark: 'Dark',
+  settings_theme_system: 'System',
   button_disable_animations: 'Disable Animations',
   settings_button_contacts_access_permission: 'Contacts Access',
   settings_button_lock_settings: 'Tap to Lock Account Settings',
@@ -537,6 +564,12 @@ const strings = {
   swap_token_no_enabled_exchanges_2s:
     'No enabled exchanges support %1$s (on %2$s) at this time',
   swap_minimum_receive_amount: 'Min Receive Amount',
+  swap_price_impact_warning_title: 'High Price Impact',
+  swap_price_impact_warning_body:
+    'This swap rate is significantly less favorable than the current market rate.',
+  swap_price_impact_fee_warning_title: 'High Price Impact',
+  swap_price_impact_fee_warning_body:
+    'This swap rate is significantly less favorable than the current market rate. High network fees relative to the swap amount are a contributing factor.',
   swap_minimum_amount_1s: 'Min %1$s',
   settings_button_clear_logs: 'Clear Logs',
   send_to_1s: 'Send to %1$s',
@@ -557,6 +590,18 @@ const strings = {
   settings_monero_custom: 'Custom Light Wallet Server',
   settings_monero_lws_info:
     'Edge uses Monero Light Wallet Servers (LWS) to scan for transactions. For enhanced privacy, you can run your own Monero LWS.',
+  settings_network_privacy_title: 'Network Privacy',
+  settings_network_privacy_default: 'Standard (IP is visible)',
+  settings_network_privacy_nym_mixnet: 'Nym Mixnet',
+  settings_privacy_settings: 'Privacy Settings',
+  settings_nym_mixnet_title: 'Nym Mixnet',
+  settings_nym_mixnet_warning_title: 'Nym mixnet on',
+  settings_nym_mixnet_warning_body: `Protecting your privacy — transaction can take a minute or longer before it's ready to broadcast.`,
+  settings_nym_multi_asset_warning_title: 'Nym Performance Notice',
+  settings_nym_multi_asset_warning_body:
+    'Enabling Nym Mixnet on multiple assets at once may slow down sends and delay balance updates.',
+  settings_nym_mixnet_description:
+    'The Nym mixnet encrypts and routes your internet traffic through a decentralized network of nodes to obfuscate your data and IP address. Note that use of the mixnet may slow down network traffic and delay accurate balances and transactions. Select which services to use with the mixnet:',
   settings_hours: 'Hour(s)',
   settings_minutes: 'Minute(s)',
   settings_modal_export_logs_warning:
@@ -677,7 +722,9 @@ const strings = {
   string_first_litecoin_wallet_name: 'My Litecoin',
   string_first_cardano_wallet_name: 'My Cardano',
   string_first_cardano_preprod_wallet_name: 'My Cardano Testnet',
+  string_first_monad_wallet_name: 'My Monad',
   string_first_monero_wallet_name: 'My Monero',
+  string_first_nym_wallet_name: 'My Nym',
   string_first_qtum_wallet_name: 'My Qtum',
   string_first_ripple_wallet_name: 'My XRP',
   string_first_smartcash_wallet_name: 'My SmartCash',
@@ -688,7 +735,7 @@ const strings = {
   string_first_stellar_wallet_name: 'My Stellar',
   string_first_tezos_wallet_name: 'My Tezos',
   string_first_axelar_wallet_name: 'My Axelar',
-  string_first_coreum_wallet_name: 'My Coreum',
+  string_first_coreum_wallet_name: 'My TX',
   string_first_cosmoshub_wallet_name: 'My Cosmos Hub',
   string_first_osmosis_wallet_name: 'My Osmosis',
   string_first_sui_wallet_name: 'My Sui',
@@ -717,11 +764,13 @@ const strings = {
   string_first_optimism_wallet_name: 'My Optimism',
   string_first_bobevm_wallet_name: 'My BOB',
   string_first_botanix_wallet_name: 'My Botanix',
+  string_first_mayachain_wallet_name: 'My MAYAChain',
   string_first_algorand_wallet_name: 'My Algorand',
   string_first_zksync_wallet_name: 'My zkSync',
   string_first_abstract_wallet_name: 'My Abstract',
   string_first_sepolia_wallet_name: 'My Sepolia',
   string_first_sonic_wallet_name: 'My Sonic',
+  string_first_opbnb_wallet_name: 'My opBNB',
   my_crypto_wallet_name: 'My %s',
   string_help: 'Help',
   string_exit: 'Exit',
@@ -733,6 +782,10 @@ const strings = {
   string_rename: 'Rename',
   string_resync: 'Resync',
   string_save: 'Save',
+  unsaved_changes_discard: 'Discard',
+  unsaved_changes_message:
+    'You have unsaved changes. Would you like to save or discard them?',
+  unsaved_changes_title: 'Unsaved Changes',
   string_share: 'Share',
   string_to_capitalize: 'To',
   string_show_balance: 'Show Balance',
@@ -1397,7 +1450,8 @@ const strings = {
   string_max_cap: 'MAX',
   string_warning: 'Warning', // Generic string. Same with wc_smartcontract_warning_title
   string_report_error: 'Report Error',
-  string_report_sent: 'Report sent.',
+  string_report_sent: 'The report has been sent successfully.',
+  string_show_error: 'Show Error',
   string_best_rate_badge_text: 'Best\nRate',
 
   step_prefix_s: 'Step %s:',
@@ -1820,6 +1874,8 @@ const strings = {
 
   // #region GuiPlugins
 
+  form_field_mailing_address_title: 'Mailing Address',
+  form_field_personal_information_title: 'Personal Information',
   form_field_title_account_owner: 'Account Owner',
   form_field_title_address_city: 'City',
   form_field_title_address_country: 'Country',
@@ -1834,6 +1890,12 @@ const strings = {
   form_field_title_last_name: 'Last Name',
   form_field_title_iban: 'IBAN',
   form_field_title_swift_bic: 'SWIFT/BIC',
+  form_field_title_phone: 'Phone Number',
+  form_field_title_date_of_birth: 'Date of Birth (YYYY-MM-DD)',
+  form_field_title_ssn: 'SSN',
+  form_field_error_invalid_phone: 'Please enter a valid phone number',
+  form_field_error_invalid_dob: 'Please enter a valid date (YYYY-MM-DD)',
+  form_field_error_invalid_ssn: 'Please enter a valid SSN (XXX-XX-XXXX)',
 
   bank_info_title: 'Bank Info',
   home_address_title: 'Home Address',
@@ -1899,23 +1961,52 @@ const strings = {
   gift_card_slider_terms:
     'By sliding to confirm, you are agreeing to the {{link}}gift card terms and conditions{{/link}}.',
   gift_card_more_options: 'Browse more gift cards',
+  gift_card_no_payment_address:
+    'Order created but no payment address was returned. Please try again.',
   gift_card_network_error:
     'Unable to load gift cards. Please check your network connection.',
+  gift_card_service_error:
+    'Gift card service is temporarily unavailable. Please try again later.',
+  gift_card_refresh_error:
+    'Unable to refresh. Card information may not be up to date.',
+  gift_card_refresh_service_error:
+    'Gift card service unavailable. Card information may not be up to date.',
   gift_card_minimum_warning_title: 'Below Minimum',
-  gift_card_minimum_warning_header:
-    'The selected amount is below the minimum for %s.',
-  gift_card_minimum_warning_footer:
-    'Please select a different payment method or increase your purchase amount to at least %s.',
+  gift_card_minimum_warning_header_1s:
+    'The selected amount is below the minimum for %1$s.',
+  gift_card_minimum_warning_footer_1s:
+    'Please select a different payment method or increase your purchase amount to at least %1$s.',
+  gift_card_minimum_warning_generic:
+    'The selected amount is too small for this cryptocurrency. Please select a different payment method or increase your purchase amount.',
   gift_card_redeemed_cards: 'Redeemed Cards',
   gift_card_unmark_as_redeemed: 'Unmark as Redeemed',
   gift_card_active_cards: 'Active Cards',
+  gift_card_confirming: 'Awaiting Payment Confirmations...',
+  gift_card_failed: 'Failed',
+  gift_card_get_help: 'Get Help',
+  gift_card_account_info_title: 'Gift Card Account Information',
+  gift_card_account_info_body:
+    'The information below is your customer credentials used with our Phaze gift card provider. Share this with our support team to troubleshoot gift card purchases.',
+  gift_card_account_info_reveal_button: 'View Phaze Account Info',
+  gift_card_account_info_warning:
+    'Anyone with access to this information may be able to redeem your unredeemed gift cards. Do not share this publicly.',
+  gift_card_account_info_email: 'Account Email',
+  gift_card_account_info_rotated:
+    'A new identity has been created for future purchases.',
+  gift_card_account_info_user_id: 'Phaze User ID',
   gift_card_pending: 'Pending Delivery, Please Wait...',
   gift_card_pending_toast:
     'Your gift card is being delivered. Please wait for a few minutes for it to arrive.',
+  gift_card_order_id_label: 'Order ID',
+  gift_card_product_id_label: 'Product ID',
+  gift_card_quote_id_label: 'Quote ID',
+  gift_card_quote_id_label_1s: 'QuoteID: %1$s',
   gift_card_quote_expired_toast: 'Your quote has expired. Please try again.',
   gift_card_product_unavailable_title: 'Temporarily Unavailable',
   gift_card_product_unavailable_warning:
     'Card is temporarily unavailable. Please select another card from this brand or try again later.',
+  gift_card_no_supported_assets:
+    'No supported payment methods available. Please try again later.',
 
   // #endregion
 
@@ -2098,6 +2189,10 @@ const strings = {
     'Pending transactions confirmed, you may proceed with your transaction.',
   split_from_1s: 'Split from %1$s',
   split_description: 'This action creates wallets from pre-existing wallets.',
+  split_description_evm:
+    'EVM-compatible networks share the same keys and public address. Splitting sets up a wallet to access and manage funds on another network using your existing address.',
+  split_description_utxo:
+    'Blockchain forks create coins on a new chain using your existing keys. Splitting sets up a wallet to access and manage those coins.',
   add_custom_token: 'Add Custom Token',
   choose_custom_token_wallet: 'Select Wallet for Custom Token',
   notifications_pinned: 'Pinned',
@@ -2360,6 +2455,8 @@ const strings = {
   buy_new_card_button: `Buy New Card`,
   card_amount_max_error_message_s: `Maximum card purchase amount is $%s`,
   card_amount_min_error_message_s: `Minimum card purchase amount is $%s`,
+  card_amount_max_error_message_1s: 'Maximum card purchase amount is %1$s',
+  card_amount_min_error_message_1s: 'Minimum card purchase amount is %1$s',
   delete_card_confirmation_title: 'Delete Card?',
   getting_payment_invoice_message: 'Getting payment invoice',
   learn_more_button: `Learn More`,
@@ -2413,6 +2510,7 @@ const strings = {
   ramp_kyc_additional_info_required:
     'Additional information is required for KYC verification.',
   ramp_kyc_unknown_status: 'Unknown verification status.',
+  ramp_kyc_complete_button: 'Complete KYC',
   ramp_signup_failed_title: 'Failed to Sign Up',
   ramp_signup_failed_account_existsmessage:
     'An account already exists using this email address. Please contact support to recover your account.',
@@ -2431,7 +2529,8 @@ const strings = {
   ramp_bank_details_title: 'Bank Account Details',
   ramp_bank_details_error_title: 'Submission Error',
   ramp_bank_name_placeholder: 'Bank Name',
-  ramp_account_name_placeholder: 'Account Name',
+  ramp_account_nickname_placeholder: 'Account Nickname',
+  ramp_account_nickname_default_2s: "%1$s %2$s's Bank Account",
   ramp_account_number_placeholder: 'Account Number',
   ramp_routing_number_placeholder: 'Routing Number',
   ramp_account_number_error_min_length_1s:

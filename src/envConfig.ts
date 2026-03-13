@@ -240,6 +240,7 @@ export const asEnvConfig = asObject({
     })
   ),
   BOTANIX_INIT: asCorePluginInit(asEvmApiKeys),
+  MAYACHAIN_INIT: asCorePluginInit(asBoolean),
   CARDANO_INIT: asCorePluginInit(
     asObject({
       blockfrostProjectId: asOptional(asString),
@@ -342,12 +343,21 @@ export const asEnvConfig = asObject({
       apiKey: asOptional(asString, '')
     }).withRest
   ),
+  MONAD_INIT: asCorePluginInit(asEvmApiKeys),
   MONERO_INIT: asCorePluginInit(
     asObject({
       apiKey: asOptional(asString, ''),
       edgeApiKey: asOptional(asString, '')
     }).withRest
   ),
+  NEXCHANGE_INIT: asCorePluginInit(
+    asObject({
+      apiKey: asOptional(asString, ''),
+      referralCode: asOptional(asString, '')
+    }).withRest
+  ),
+  NYM_INIT: asCorePluginInit(asBoolean),
+  OPBNB_INIT: asCorePluginInit(asEvmApiKeys),
   OPTIMISM_INIT: asCorePluginInit(asEvmApiKeys),
   OSMOSIS_INIT: asCorePluginInit(asEvmApiKeys),
   PIVX_INIT: asCorePluginInit(
@@ -392,6 +402,11 @@ export const asEnvConfig = asObject({
       apiKey: asOptional(asString, '')
     }).withRest
   ),
+  XGRAM_INIT: asCorePluginInit(
+    asObject({
+      apiKey: asOptional(asString, '')
+    }).withRest
+  ),
   UNIZEN_INIT: asCorePluginInit(
     asObject({
       apiKey: asOptional(asString, '')
@@ -418,6 +433,13 @@ export const asEnvConfig = asObject({
       appId: asOptional(asString, 'edge'),
       ninerealmsClientId: asOptional(asString, ''),
       thorname: asOptional(asString, 'ej'),
+      thorswapApiKey: asOptional(asString)
+    }).withRest
+  ),
+  SWAPKITV3_INIT: asCorePluginInit(
+    asObject({
+      affiliateFeeBasis: asOptional(asString, '50'),
+      appId: asOptional(asString, 'edge'),
       thorswapApiKey: asOptional(asString)
     }).withRest
   ),

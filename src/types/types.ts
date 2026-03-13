@@ -216,17 +216,20 @@ const asLocalAccountSettingsInner = asObject({
     asAccountNotifDismissInfo,
     asAccountNotifDismissInfo({})
   ),
+  isNymWarningShown: asMaybe(asBoolean, false),
   tokenWarningsShown: asMaybe(asTokenWarningsShown, []),
   reviewTrigger: asMaybe(asReviewTriggerData)
 })
 
 export const asDefaultScreen = asValue('home', 'assets')
+export const asThemeMode = asValue('light', 'dark', 'system')
 
 const asDeviceSettingsInner = asObject({
   defaultScreen: asMaybe(asDefaultScreen, 'home'),
   developerPluginUri: asMaybe(asString),
   disableAnimations: asMaybe(asBoolean, false),
   forceLightAccountCreate: asMaybe(asBoolean, false),
+  themeMode: asMaybe(asThemeMode, 'dark'),
   isSurveyDiscoverShown: asMaybe(asBoolean, false)
 })
 
@@ -238,6 +241,7 @@ export const asDeviceSettings = asMaybe(asDeviceSettingsInner, () =>
 )
 
 export type DefaultScreen = ReturnType<typeof asDefaultScreen>
+export type ThemeMode = ReturnType<typeof asThemeMode>
 export type PasswordReminder = ReturnType<typeof asPasswordReminder>
 export type LocalAccountSettings = ReturnType<typeof asLocalAccountSettings>
 export type DeviceSettings = ReturnType<typeof asDeviceSettings>

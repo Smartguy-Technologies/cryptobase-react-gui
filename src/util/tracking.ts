@@ -28,6 +28,7 @@ export type TrackingEventName =
   | 'Buy_Quote'
   | 'Buy_Quote_Next'
   | 'Buy_Success'
+  | 'Buy_Tracking_Mismatch'
   | 'Create_Wallet_Failed'
   | 'Create_Wallet_From_Search_Failed'
   | 'Create_Wallet_From_Search_Success'
@@ -159,6 +160,12 @@ export interface TrackingValues extends LoginTrackingValues {
     | SellConversionValues
     | BuyConversionValues
     | SwapConversionValues
+
+  // Diagnostic: Buy tracking verification fields
+  _closureFiatAmount?: string
+  _closureCryptoAmount?: string
+  _apiFiatAmount?: string
+  _apiCryptoAmount?: string
 }
 
 // Set up the global Posthog analytics instance at boot
@@ -190,7 +197,7 @@ export function trackError(
   error: unknown,
   nameTag?: string,
   metadata?: Record<string, any>
-): void {
+): { eventId: string } | { aggregateId: string } {
   const err = normalizeError(error)
 
   if (err instanceof AggregateErrorFix) {
@@ -202,10 +209,10 @@ export function trackError(
         trackError(e, nameTag, metadata)
       })
     })
-    return
+    return { aggregateId }
   }
 
-  captureException(err, scope => {
+  const eventId = captureException(err, scope => {
     scope.setTag('event.name', nameTag)
     if (metadata != null) {
       const context: Record<string, unknown> = {}
@@ -214,6 +221,7 @@ export function trackError(
     }
     return scope
   })
+  return { eventId }
 }
 
 /**

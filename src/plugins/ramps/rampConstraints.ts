@@ -108,8 +108,11 @@ export function* constraintGenerator(
     yield params.paymentType !== 'ach'
   }
 
+  //
+  // Infinite
+  //
+
   if (params.rampPluginId === 'infinite') {
-    // Disable Infinite completely
-    yield false
+    yield true
   }
 }

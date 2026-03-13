@@ -15,15 +15,15 @@ PODS:
   - disklet (0.5.2):
     - React
   - DoubleConversion (1.1.6)
-  - edge-core-js (2.39.0):
+  - edge-core-js (2.43.3):
     - React-Core
-  - edge-currency-accountbased (4.70.0):
+  - edge-currency-accountbased (4.77.0):
     - React-Core
-  - edge-currency-plugins (3.8.10):
+  - edge-currency-plugins (3.9.0):
     - React-Core
-  - edge-exchange-plugins (2.40.4):
+  - edge-exchange-plugins (2.43.0):
     - React-Core
-  - edge-login-ui-rn (3.34.7):
+  - edge-login-ui-rn (3.35.2):
     - React-Core
   - EXConstants (17.1.7):
     - ExpoModulesCore
@@ -98,7 +98,7 @@ PODS:
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.12)
     - GoogleUtilities/Logger (~> 7.12)
-  - FirebaseCoreExtension (10.27.0):
+  - FirebaseCoreExtension (10.29.0):
     - FirebaseCore (~> 10.0)
   - FirebaseCoreInternal (10.29.0):
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
@@ -161,17 +161,17 @@ PODS:
   - hermes-engine/Pre-built (0.79.2)
   - ImageColors (2.4.0):
     - ExpoModulesCore
-  - libwebp (1.3.2):
-    - libwebp/demux (= 1.3.2)
-    - libwebp/mux (= 1.3.2)
-    - libwebp/sharpyuv (= 1.3.2)
-    - libwebp/webp (= 1.3.2)
-  - libwebp/demux (1.3.2):
+  - libwebp (1.5.0):
+    - libwebp/demux (= 1.5.0)
+    - libwebp/mux (= 1.5.0)
+    - libwebp/sharpyuv (= 1.5.0)
+    - libwebp/webp (= 1.5.0)
+  - libwebp/demux (1.5.0):
     - libwebp/webp
-  - libwebp/mux (1.3.2):
+  - libwebp/mux (1.5.0):
     - libwebp/demux
-  - libwebp/sharpyuv (1.3.2)
-  - libwebp/webp (1.3.2):
+  - libwebp/sharpyuv (1.5.0)
+  - libwebp/webp (1.5.0):
     - libwebp/sharpyuv
   - Logging (1.4.0)
   - MnemonicSwift (2.2.4)
@@ -180,7 +180,7 @@ PODS:
     - nanopb/encode (= 2.30910.0)
   - nanopb/decode (2.30910.0)
   - nanopb/encode (2.30910.0)
-  - OpenSSL-Universal (3.3.3000)
+  - OpenSSL-Universal (3.3.3001)
   - PromisesObjC (2.4.0)
   - RCT-Folly (2024.11.18.00):
     - boost
@@ -221,7 +221,6 @@ PODS:
     - React-RCTText (= 0.79.2)
     - React-RCTVibration (= 0.79.2)
   - React-callinvoker (0.79.2)
-  - React-Codegen (0.1.0)
   - React-Core (0.79.2):
     - glog
     - hermes-engine
@@ -1533,14 +1532,13 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-contacts (8.0.5):
+  - react-native-contacts (8.0.10):
     - DoubleConversion
     - glog
     - hermes-engine
     - RCT-Folly (= 2024.11.18.00)
     - RCTRequired
     - RCTTypeSafety
-    - React-Codegen
     - React-Core
     - React-debug
     - React-Fabric
@@ -1665,7 +1663,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-piratechain (0.5.19):
+  - react-native-piratechain (0.5.22):
     - gRPC-Swift (~> 1.8)
     - MnemonicSwift (~> 2.2)
     - React-Core
@@ -1773,10 +1771,10 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-zano (0.2.5):
+  - react-native-zano (0.2.8):
     - OpenSSL-Universal
     - React-Core
-  - react-native-zcash (0.10.2):
+  - react-native-zcash (0.10.4):
     - gRPC-Swift (~> 1.8)
     - MnemonicSwift (~> 2.2)
     - React-Core
@@ -2339,7 +2337,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNQrGenerator (1.4.4):
+  - RNQrGenerator (1.4.6):
     - React
     - ZXingObjC
   - RNReactNativeHapticFeedback (1.14.0):
@@ -2474,7 +2472,7 @@ PODS:
     - Yoga
   - RNSecureRandom (1.0.1):
     - React
-  - RNSentry (6.22.0):
+  - RNSentry (7.12.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2497,7 +2495,7 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - Sentry/HybridSDK (= 8.56.2)
+    - Sentry/HybridSDK (= 8.58.0)
     - Yoga
   - RNShare (12.0.11):
     - DoubleConversion
@@ -2724,13 +2722,13 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
-  - Sentry/HybridSDK (8.56.2)
+  - Sentry/HybridSDK (8.58.0)
   - SocketRocket (0.7.1)
-  - SQLite.swift/standalone (0.15.3):
+  - SQLite.swift/standalone (0.15.4):
     - sqlite3
-  - "sqlite3 (3.46.0+1)":
-    - "sqlite3/common (= 3.46.0+1)"
-  - "sqlite3/common (3.46.0+1)"
+  - sqlite3 (3.51.1):
+    - sqlite3/common (= 3.51.1)
+  - sqlite3/common (3.51.1)
   - SwiftNIO (2.40.0):
     - _NIODataStructures (= 2.40.0)
     - CNIOAtomics (= 2.40.0)
@@ -2861,7 +2859,7 @@ PODS:
     - SwiftNIOFoundationCompat (< 3, >= 2.32.0)
     - SwiftNIOPosix (< 3, >= 2.32.0)
     - SwiftNIOTLS (< 3, >= 2.32.0)
-  - SwiftProtobuf (1.26.0)
+  - SwiftProtobuf (1.33.3)
   - VisionCamera (4.7.2):
     - VisionCamera/Core (= 4.7.2)
     - VisionCamera/React (= 4.7.2)
@@ -2869,7 +2867,7 @@ PODS:
   - VisionCamera/React (4.7.2):
     - React-Core
   - Yoga (0.0.0)
-  - ZIPFoundation (0.9.11)
+  - ZIPFoundation (0.9.20)
   - ZXingObjC (3.6.9):
     - ZXingObjC/All (= 3.6.9)
   - ZXingObjC/All (3.6.9)
@@ -3035,7 +3033,6 @@ SPEC REPOS:
     - nanopb
     - OpenSSL-Universal
     - PromisesObjC
-    - React-Codegen
     - SDWebImage
     - SDWebImageWebPCoder
     - Sentry
@@ -3338,11 +3335,11 @@ SPEC CHECKSUMS:
   CNIOWindows: 3047f2d8165848a3936a0a755fee27c6b5ee479b
   disklet: 8a20bf8a568635b6e6bb8f93297dac13ee5cef98
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
-  edge-core-js: 5b2ad70555f2dd19d9707a773aa3c9c27a9f926f
-  edge-currency-accountbased: b9407e907da1c2592b2b771c3be2a36d4dd3d597
-  edge-currency-plugins: 6b3341707a6a5c74f837a012768dd2f6c55a691b
-  edge-exchange-plugins: f31912c54a50852bd02077b795aace0e0bee8365
-  edge-login-ui-rn: 8fd0a0bb89754c4955382ed201f09d896c5583be
+  edge-core-js: 25c812c0a6cd8c6862da9acbedcb744eb1474ce1
+  edge-currency-accountbased: da708080381fe41112e120ec1ecd125bc757f773
+  edge-currency-plugins: fe38711931eb630b3d33c1624224446690c00d8b
+  edge-exchange-plugins: d0aa0bac5ede747ee276facbd616a29ba1d762e4
+  edge-login-ui-rn: 0a7e1a0bedddca821be66b6ad9ebafe687afbc18
   EXConstants: 98bcf0f22b820f9b28f9fee55ff2daededadd2f8
   Expo: 43d9e0c3108cc3a1c2739743e9b51086144ee4b0
   ExpoAsset: ef06e880126c375f580d4923fdd1cdf4ee6ee7d6
@@ -3354,7 +3351,7 @@ SPEC CHECKSUMS:
   FBLazyVector: 84b955f7b4da8b895faf5946f73748267347c975
   Firebase: cec914dab6fd7b1bd8ab56ea07ce4e03dd251c2d
   FirebaseCore: 30e9c1cbe3d38f5f5e75f48bfcea87d7c358ec16
-  FirebaseCoreExtension: 4ec89dd0c6de93d6becde32122d68b7c35f6bf5d
+  FirebaseCoreExtension: 705ca5b14bf71d2564a0ddc677df1fc86ffa600f
   FirebaseCoreInternal: df84dd300b561c27d5571684f389bf60b0a5c934
   FirebaseInstallations: 913cf60d0400ebd5d6b63a28b290372ab44590dd
   FirebaseMessaging: 7b5d8033e183ab59eb5b852a53201559e976d366
@@ -3365,11 +3362,11 @@ SPEC CHECKSUMS:
   gRPC-Swift: 74adcaaa62ac5e0a018938840328cb1fdfb09e7b
   hermes-engine: 314be5250afa5692b57b4dd1705959e1973a8ebe
   ImageColors: 869f48b27ca2afb347fd0bada3257a5f698ee55e
-  libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
+  libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
   MnemonicSwift: 40ba76b951b75b32e2719df989b4d6da5798fe26
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
-  OpenSSL-Universal: d776ce24dab24323e6995dfb17c64d598885d05c
+  OpenSSL-Universal: 6082b0bf950e5636fe0d78def171184e2b3899c2
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   RCT-Folly: e78785aa9ba2ed998ea4151e314036f6c49e6d82
   RCTDeprecation: 83ffb90c23ee5cea353bd32008a7bca100908f8c
@@ -3377,7 +3374,6 @@ SPEC CHECKSUMS:
   RCTTypeSafety: 659ae318c09de0477fd27bbc9e140071c7ea5c93
   React: c2d3aa44c49bb34e4dfd49d3ee92da5ebacc1c1c
   React-callinvoker: 1bdfb7549b5af266d85757193b5069f60659ef9d
-  React-Codegen: 4b8b4817cea7a54b83851d4c1f91f79aa73de30a
   React-Core: 10597593fdbae06f0089881e025a172e51d4a769
   React-CoreModules: 6907b255529dd46895cf687daa67b24484a612c2
   React-cxxreact: a9f5b8180d6955bc3f6a3fcd657c4d9b4d95c1f6
@@ -3405,7 +3401,7 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: 444c5701aece79629bb73bd9e7ad8937ae65238c
   react-native-adservices: 18087a4a5106c5133b0cde73701bf875e3163cfc
   react-native-compat: d39ea5df32baea7a806bb7246444eab86d1c7617
-  react-native-contacts: 73be890da2bb01c478e6cb6adbdf0bea4b03e62c
+  react-native-contacts: b854a0fabc5d037bb344deb719a1aa03c9ffd88b
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
   react-native-image-picker: f6ece66f251f4a17aab08f5add7be6eb9e7f5356
   react-native-in-app-review: 668f4c80d7f95945e0ad7833e98c466cb40d6808
@@ -3414,13 +3410,13 @@ SPEC CHECKSUMS:
   react-native-mymonero-core: 89717c706af7024c9100ccb6c3f22a587ccc8f09
   react-native-netinfo: cec9c4e86083cb5b6aba0e0711f563e2fbbff187
   react-native-performance: f0471c84eda0f6625bd42a1f515b1b216f284b12
-  react-native-piratechain: b1a2e627232b583e0060b50db340becb64e3cde1
+  react-native-piratechain: 7a589e5935cce38db012200c2d1e454502af7f10
   react-native-render-html: 5afc4751f1a98621b3009432ef84c47019dcb2bd
   react-native-safari-view: 07dc856a2663fef31eaca6beb79b111b8f6cf1f2
   react-native-safe-area-context: 83e0ac3d023997de1c2e035af907cc4dc05f718c
   react-native-webview: 69c118d283fccfbc4fca0cd680e036ff3bf188fa
-  react-native-zano: 4af16a60e81819be92c425a373db3fa7908b10fb
-  react-native-zcash: 76e2ad77f83969f2d2c20d423c2049179a95fced
+  react-native-zano: 55542cc969fbe349608b3f877575b9f3ce62c303
+  react-native-zcash: 3d108b151ae84a2425d05353715025ddd0715d9d
   React-NativeModulesApple: df8e5bc59e78ca3040ffbf41336889f3bd0fad68
   React-oscompat: ef5df1c734f19b8003e149317d041b8ce1f7d29c
   React-perflogger: 9a151e0b4c933c9205fd648c246506a83f31395d
@@ -3467,12 +3463,12 @@ SPEC CHECKSUMS:
   RNGestureHandler: c50b05a3941646c4e4098344033ca4609b42be85
   RNLocalize: ae28fc65c1ae7f595c86a926b6beb43790e491c3
   RNPermissions: 60b23d827dc7a4b2e347356fc20206184676637c
-  RNQrGenerator: 95feb09b4b2ed65f3a4afe795a20beed4b134ab5
+  RNQrGenerator: af2f0888eb81b8ff99517a3929d6399444dcc56d
   RNReactNativeHapticFeedback: 8364333ca888b1b7ec9d2daf04b010ee5436366e
   RNReanimated: 0516f7712064007219d296b7788c585ecbf73d52
   RNScreens: eb3800639b236501d2d6487d930b35fe3db68cb0
   RNSecureRandom: b64d263529492a6897e236a22a2c4249aa1b53dc
-  RNSentry: 19b4ee2a31886bcc5a64698a27cf8495cb8f5d17
+  RNSentry: 0c2660868695668bf93eef20033d0e8bc6016666
   RNShare: 6300b941668273d502ecee9122cade0d5ea966bd
   RNSound: cfeaf6c6a734303c887e04b946cbb7e294bff123
   RNStoreReview: b3cb7df1405d56afd51301ada4660f6c9b970055
@@ -3481,10 +3477,10 @@ SPEC CHECKSUMS:
   RNWorklets: b1faafefb82d9f29c4018404a0fb33974b494a7b
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
-  Sentry: b53951377b78e21a734f5dc8318e333dbfc682d7
+  Sentry: d587a8fe91ca13503ecd69a1905f3e8a0fcf61be
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  SQLite.swift: 8d054987f02728cc912b0eb5a9659650573a65a2
-  sqlite3: 292c3e1bfe89f64e51ea7fc7dab9182a017c8630
+  SQLite.swift: a107c734115fea616a4ad31371d39f1637e8de56
+  sqlite3: 8d708bc63e9f4ce48f0ad9d6269e478c5ced1d9b
   SwiftNIO: 829958aab300642625091f82fc2f49cb7cf4ef24
   SwiftNIOConcurrencyHelpers: 697370136789b1074e4535eaae75cbd7f900370e
   SwiftNIOCore: 473fdfe746534d7aa25766916459eeaf6f92ef49
@@ -3498,12 +3494,12 @@ SPEC CHECKSUMS:
   SwiftNIOSSL: d153c5a6fc5b2301b0519b4c4d037a9414212da6
   SwiftNIOTLS: 598af547490133e9aac52aed0c23c4a90c31dcfc
   SwiftNIOTransportServices: 0b2b407819d82eb63af558c5396e33c945759503
-  SwiftProtobuf: 5e8349171e7c2f88f5b9e683cb3cb79d1dc780b3
+  SwiftProtobuf: e1b437c8e31a4c5577b643249a0bb62ed4f02153
   VisionCamera: 30b358b807324c692064f78385e9a732ce1bebfe
   Yoga: 50518ade05048235d91a78b803336dbb5b159d5d
-  ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
+  ZIPFoundation: dfd3d681c4053ff7e2f7350bc4e53b5dba3f5351
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: 8c119d1d2fda8d2ceda1c186a5415d0c7473469a
+PODFILE CHECKSUM: ffc45b7c82f76539837854e7add5bc6ad74ef0b6
 
 COCOAPODS: 1.16.2

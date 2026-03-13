@@ -2,14 +2,81 @@
 
 ## Unreleased (develop)
 
+## 4.46.0 (staging)
+
+- added: Xgram swap exchange plugin support
+- added: New Banxa payment methods
+- added: Debug settings scene (Developer Mode only) with nodes/servers inspection, engine `dataDump` viewer, and log viewer
+
+## 4.45.0 (2025-03-10)
+
+- fixed: Fixed Zano token minting transaction detection issues.
+- fixed: Fixed Zano resync data clearing bug.
+- fixed: Improved Nym Mixnet Network Privacy performance.
+- fixed: Promo card carousel touch interception opening wrong card's CTA link.
+- removed: Temporarily disabled Nym mixnet until feature is stable.
+
+## 4.44.0 (2025-02-24)
+
+- added: MAYAChain (CACAO) wallet support
+- added: Monad (MON) wallet support
+- added: Nym (NYM) wallet support
+- added: opBNB (BNB) support
+- added: Price impact warning on swap confirmation with color-coded severity
+- added: Register SwapKit V3 as a separate exchange plugin
+- added: Warning card on send scene when Nym mixnet is active and transaction is loading
+- added: Verify buy tracking values via Moonpay transactions API with mismatch diagnostics
+- added: Show performance warning when enabling Nym Mixnet on multiple assets
+- added: Gift card account information scene with Get Help access from kebab menu and failed cards
+- added: Quote ID display in gift card transaction details with card-level copy
+- changed: Distinguish network vs service errors in gift card scenes
+- changed: Lock network fee to high priority for gift card purchases
+- changed: Pad gift card purchase quantity by 0.00000002 to mitigate underpayments
+- added: Register n.exchange (nexchange) swap plugin
+- changed: Manage tokens scene saves changes on explicit save instead of live toggling
+- changed: Unify split wallet scene titles and add chain-specific descriptions for EVM and UTXO splits
+- changed: ramps: Infinite buy support enabled
+- changed: Update Coreum display names to TX branding
+- fixed: Missing 2-factor approve / deny scene on login
+- fixed: Security check notification not reappearing after dismissal
+- fixed: Fix incorrect Moonpay buy tracking values caused by deeplink handler overwrite
+- fixed: Search bars automatically accepting autocorrect suggestions
+
+## 4.43.2 (2025-02-15)
+
+- fixed: (Zano) Reject wrapped ETH addresses in address validation.
+
+## 4.43.1 (2026-02-13)
+
+- fixed: Missing 2-factor approve / deny scene on login
+- fixed: Security check notification not reappearing after dismissal
+
+## 4.43.0 (2026-02-09)
+
+- added: `chooseCaip19Asset` EdgeProvider API for precise wallet selection using CAIP-19 identifiers
+- added: EdgeSpend feature for gift card purchase via Phaze
+- added: Network privacy settings for Nym Mixnet in currency settings
+- added: Pass OS and app version details to core context for v2/coreRollup endpoint
+- added: New dedicated Privacy Settings scene for Nym Mixnet setting.
+- changed: Add Cosmos-based currencies (axelar, coreum, cosmoshub, osmosis, thorchainrune, thorchainrunestagenet) to currency settings
+- changed: Add Ethereum-based currencies (abstract, amoy, arbitrum, avalanche, base, binancesmartchain, bobevm, botanix, celo, ethDev, ethereum, ethereumclassic, ethereumpow, fantom, filecoinfevm, filecoinfevmcalibration, holesky, hyperevm, optimism, polygon, pulsechain, rsk, sepolia, sonic, zksync) to currency settings
+- changed: Append chain names to token codes in RampCreateScene
+- changed: Light mode persistence, theme colors, and images
+- changed: ramps: Infinite buy support enabled
+- fixed: Handle parallel wallet splits more reliably
+- fixed: iOS simulator builds for XCode 26
+
+## 4.42.1 (2026-01-28)
+
 - added: `chooseCaip19Asset` EdgeProvider API for precise wallet selection using CAIP-19 identifiers
 - added: Pass OS and app version details to core context for v2/coreRollup endpoint
+- added: EdgeSpend feature for gift card purchase via Phaze
 - changed: Append chain names to token codes in RampCreateScene
 
-## 4.42.0 (staging)
+## 4.42.0 (2026-01-19)
 
 - added: Zcash buy/sell support with Banxa
-- changed: ramps: Infinite buy support according to new API (disabled temporarily)
+- changed: ramps: Infinite buy support according to new API
 - changed: Optimize login performance.
 - changed: Update Monero LWS server name to "Edge LWS"
 - fixed: Light account/backup reminder notification banner sometimes missing on login

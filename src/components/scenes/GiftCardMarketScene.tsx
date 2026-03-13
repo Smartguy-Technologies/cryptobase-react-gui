@@ -6,10 +6,12 @@ import LinearGradient from 'react-native-linear-gradient'
 import Animated from 'react-native-reanimated'
 
 import { showCountrySelectionModal } from '../../actions/CountryListActions'
+import { readSyncedSettings } from '../../actions/SettingsActions'
 import { EDGE_CONTENT_SERVER_URI } from '../../constants/CdnConstants'
 import { SCROLL_INDICATOR_INSET_FIX } from '../../constants/constantSettings'
 import { guiPlugins } from '../../constants/plugins/GuiPlugins'
 import { ENV } from '../../env'
+import { useAsyncEffect } from '../../hooks/useAsyncEffect'
 import { useGiftCardProvider } from '../../hooks/useGiftCardProvider'
 import { useHandler } from '../../hooks/useHandler'
 import { lstrings } from '../../locales/strings'
@@ -21,6 +23,7 @@ import { useDispatch, useSelector } from '../../types/reactRedux'
 import type { EdgeAppSceneProps } from '../../types/routerTypes'
 import { debugLog } from '../../util/logger'
 import { CountryButton } from '../buttons/RegionButton'
+import { AlertCardUi4 } from '../cards/AlertCard'
 import { EdgeCard } from '../cards/EdgeCard'
 import { GiftCardTile } from '../cards/GiftCardTile'
 import { CircularBrandIcon } from '../common/CircularBrandIcon'
@@ -105,6 +108,7 @@ export const GiftCardMarketScene: React.FC<Props> = props => {
   // Get user's current country code (specific selector to avoid re-renders on other setting changes)
   const countryCode = useSelector(state => state.ui.settings.countryCode)
   const account = useSelector(state => state.core.account)
+  const isConnected = useSelector(state => state.network.isConnected)
 
   // Provider (requires API key configured)
   const phazeConfig = ENV.PLUGIN_API_KEYS?.phaze
@@ -158,6 +162,29 @@ export const GiftCardMarketScene: React.FC<Props> = props => {
   const [viewMode, setViewMode] = React.useState<ViewMode>('grid')
 
   const handleScroll = useSceneScrollHandler()
+
+  // Fallback check for deep links or other direct navigation to this scene
+  // without going through navigateToGiftCards helper
+  useAsyncEffect(
+    async () => {
+      if (countryCode !== '') return
+
+      await dispatch(
+        showCountrySelectionModal({
+          account,
+          countryCode: '',
+          skipStateProvince: true
+        })
+      )
+      // Re-read from synced settings to determine if user actually selected
+      const synced = await readSyncedSettings(account)
+      if ((synced.countryCode ?? '') === '') {
+        navigation.goBack()
+      }
+    },
+    [],
+    'GiftCardMarketScene:countryCheck'
+  )
 
   // Helper to map brand response to MarketItem
   const mapBrandsToItems = React.useCallback(
@@ -213,8 +240,10 @@ export const GiftCardMarketScene: React.FC<Props> = props => {
     prevCountryCodeRef.current = countryCode
   }, [countryCode])
 
-  // Fetch brands. Initial data comes from synchronous cache read in useState
-  const { data: apiBrands } = useQuery({
+  // Fetch brands. Initial data comes from synchronous cache read in useState.
+  // Adding isConnected to enabled so the query auto-retries when connectivity
+  // returns after being offline.
+  const { data: apiBrands, isError: isBrandsError } = useQuery({
     queryKey: ['phazeBrands', countryCode, isReady],
     queryFn: async () => {
       if (provider == null || cache == null) {
@@ -254,7 +283,7 @@ export const GiftCardMarketScene: React.FC<Props> = props => {
 
       return allBrands
     },
-    enabled: isReady && provider != null && countryCode !== '',
+    enabled: isConnected && isReady && provider != null && countryCode !== '',
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000,
     retry: 1
@@ -464,7 +493,16 @@ export const GiftCardMarketScene: React.FC<Props> = props => {
           headerTitle={lstrings.title_gift_card_market}
           headerTitleChildren={<CountryButton onPress={handleRegionSelect} />}
         >
-          {items == null ? (
+          {items == null && isBrandsError ? (
+            <AlertCardUi4
+              type="warning"
+              title={
+                isConnected
+                  ? lstrings.gift_card_service_error
+                  : lstrings.gift_card_network_error
+              }
+            />
+          ) : items == null ? (
             <FillLoader />
           ) : (
             <>
