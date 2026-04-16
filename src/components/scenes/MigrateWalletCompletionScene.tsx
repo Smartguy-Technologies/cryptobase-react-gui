@@ -41,8 +41,13 @@ interface Props extends EdgeAppSceneProps<'migrateWalletCompletion'> {}
 interface MigrateWalletTokenItem extends MigrateWalletItem {
   tokenId: string
 }
+type MakeMaxSpendMethod = (params: {
+  tokenIds?: Array<string | null>
+  spendTargets: Array<{ publicAddress: string }>
+  metadata?: EdgeSpendInfo['metadata']
+}) => Promise<EdgeTransaction>
 
-const MigrateWalletCompletionComponent = (props: Props) => {
+const MigrateWalletCompletionComponent: React.FC<Props> = props => {
   const { navigation, route } = props
   const { migrateWalletList } = route.params
 
@@ -54,12 +59,11 @@ const MigrateWalletCompletionComponent = (props: Props) => {
 
   const sortedMigrateWalletListBundles = React.useMemo(() => {
     return migrateWalletList.reduce((bundles: MigrateWalletItem[][], asset) => {
-      const { createWalletIds } = asset
-      const walletId = createWalletIds[0]
+      const { createWalletId: walletId } = asset
 
       // Find the bundle with the main currency at the end of it
       const index = bundles.findIndex(
-        bundle => walletId === bundle[0].createWalletIds[0]
+        bundle => walletId === bundle[0].createWalletId
       )
 
       if (index === -1) {
@@ -98,7 +102,7 @@ const MigrateWalletCompletionComponent = (props: Props) => {
   const handleItemStatus = (
     item: MigrateWalletItem,
     status: 'complete' | 'error'
-  ) => {
+  ): void => {
     setItemStatus(currentState => ({ ...currentState, [item.key]: status }))
     const index = sortedMigrateWalletList.findIndex(
       asset => asset.key === item.key
@@ -119,8 +123,7 @@ const MigrateWalletCompletionComponent = (props: Props) => {
       const migrationPromises = []
       for (const bundle of sortedMigrateWalletListBundles) {
         const mainnetItem = bundle[bundle.length - 1]
-        const { createWalletIds } = mainnetItem
-        const oldWalletId = createWalletIds[0]
+        const { createWalletId: oldWalletId } = mainnetItem
 
         securityCheckedWallets[oldWalletId] ??= {
           checked: false,
@@ -135,7 +138,7 @@ const MigrateWalletCompletionComponent = (props: Props) => {
         const newWalletName = `${oldWalletName}${lstrings.migrate_wallet_new_fragment}`
 
         // Create new wallet
-        const createNewWalletPromise = async () => {
+        const createNewWalletPromise = async (): Promise<void> => {
           const previouslyCreatedWalletInfo = account.allKeys.find(
             keys =>
               keys.migratedFromWalletId === oldWalletId &&
@@ -182,6 +185,57 @@ const MigrateWalletCompletionComponent = (props: Props) => {
             ])
           ]
           await newWallet.changeEnabledTokenIds(tokenIdsToEnable)
+
+          if (
+            (oldWallet.otherMethods.makeMaxSpend as
+              | MakeMaxSpendMethod
+              | undefined) != null
+          ) {
+            try {
+              const tokenIds = bundle.map(item => item.tokenId)
+              const unsignedTx = await (
+                oldWallet.otherMethods.makeMaxSpend as MakeMaxSpendMethod
+              )({
+                tokenIds,
+                spendTargets: [{ publicAddress: newPublicAddress }],
+                metadata: {
+                  category: 'Transfer',
+                  name: newWalletName,
+                  notes: sprintf(
+                    lstrings.migrate_wallet_tx_notes,
+                    newWalletName
+                  )
+                }
+              })
+              const signedTx = await oldWallet.signTx(unsignedTx)
+              const broadcastedTx = await oldWallet.broadcastTx(signedTx)
+              await oldWallet.saveTx(broadcastedTx)
+
+              for (const item of bundle) {
+                handleItemStatus(item, 'complete')
+              }
+              const successfullyTransferredTokenIds = tokenIds.filter(
+                (id): id is string => id != null
+              )
+              await oldWallet.changeEnabledTokenIds(
+                tokenIdsToEnable.filter(
+                  tokenId => !successfullyTransferredTokenIds.includes(tokenId)
+                )
+              )
+
+              const { modalShown } = securityCheckedWallets[oldWalletId]
+              securityCheckedWallets[oldWalletId] = {
+                checked: true,
+                modalShown
+              }
+            } catch (e) {
+              showError(e)
+              for (const item of bundle) {
+                handleItemStatus(item, 'error')
+              }
+            }
+            return
+          }
 
           // Send tokens
           let feeTotal = '0'
@@ -342,9 +396,7 @@ const MigrateWalletCompletionComponent = (props: Props) => {
   const renderRow = useHandler(
     (data: ListRenderItemInfo<MigrateWalletItem>) => {
       const { item } = data
-      const { createWalletIds } = item
-
-      const walletId = createWalletIds[0]
+      const { createWalletId: walletId } = item
       const wallet = currencyWallets[walletId]
       if (wallet == null) return null
       return (

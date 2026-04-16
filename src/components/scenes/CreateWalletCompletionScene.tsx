@@ -39,7 +39,7 @@ export interface CreateWalletCompletionParams {
 
 interface Props extends EdgeAppSceneProps<'createWalletCompletion'> {}
 
-const CreateWalletCompletionComponent = (props: Props) => {
+const CreateWalletCompletionComponent: React.FC<Props> = props => {
   const { navigation, route } = props
   const {
     createWalletList,
@@ -145,7 +145,7 @@ const CreateWalletCompletionComponent = (props: Props) => {
               [tokenKey]: 'complete'
             }))
           },
-          error => {
+          (error: unknown) => {
             showError(error)
             setItemStatus(currentState => ({
               ...currentState,
@@ -252,24 +252,44 @@ const CreateWalletCompletionComponent = (props: Props) => {
   })
 
   const handleMigrate = useHandler(() => {
-    // Transform filtered items into the structure expected by the migration component
-    const migrateWalletList: MigrateWalletItem[] = newWalletItems.map(
-      createWallet => {
-        // Link the createWalletIds with the created wallets
-        const { key, pluginId } = createWallet
-        const wallet = wallets.find(
-          wallet => wallet.currencyInfo.pluginId === pluginId
-        )
-
-        return {
-          ...createWallet,
-          createWalletIds: wallet == null ? [''] : [wallet.id],
-          displayName: walletNames[key],
-          key,
-          type: 'create'
-        }
-      }
+    // Build migrate items from successfully created parent wallets, then attach
+    // selected tokens for the same plugin to that same wallet id.
+    const successfulNewWalletItems = newWalletItems.filter(
+      item => itemStatus[item.key] === 'complete'
     )
+    const addedTokenKeys = new Set<string>()
+    const migrateWalletList: MigrateWalletItem[] = []
+
+    for (const createWallet of successfulNewWalletItems) {
+      const { key, pluginId, walletType } = createWallet
+      const wallet = wallets.find(
+        wallet => wallet.currencyInfo.pluginId === pluginId
+      )
+      const createWalletId = wallet?.id ?? ''
+      const displayName = walletNames[key]
+
+      migrateWalletList.push({
+        ...createWallet,
+        createWalletId,
+        displayName,
+        key,
+        type: 'create'
+      })
+
+      for (const tokenItem of newTokenItems) {
+        if (tokenItem.pluginId !== pluginId) continue
+        if (addedTokenKeys.has(tokenItem.key)) continue
+        addedTokenKeys.add(tokenItem.key)
+
+        migrateWalletList.push({
+          ...tokenItem,
+          createWalletId,
+          displayName,
+          walletType,
+          type: 'create'
+        })
+      }
+    }
 
     // Navigate to the migration screen with the prepared list
     if (migrateWalletList.length > 0) {

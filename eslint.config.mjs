@@ -104,7 +104,7 @@ export default [
       'src/actions/SoundActions.ts',
       'src/actions/TokenTermsActions.tsx',
       'src/actions/TransactionExportActions.tsx',
-      'src/actions/WalletActions.tsx',
+
       'src/actions/WalletListActions.tsx',
       'src/actions/WalletListMenuActions.tsx',
       'src/app.ts',
@@ -174,8 +174,6 @@ export default [
 
       'src/components/modals/CategoryModal.tsx',
 
-      'src/components/modals/ContactListModal.tsx',
-      'src/components/modals/ContactsPermissionModal.tsx',
       'src/components/modals/CountryListModal.tsx',
       'src/components/modals/DateModal.tsx',
       'src/components/modals/FiatListModal.tsx',
@@ -184,7 +182,7 @@ export default [
 
       'src/components/modals/FundAccountModal.tsx',
       'src/components/modals/GradientFadeout.tsx',
-      'src/components/modals/HelpModal.tsx',
+
       'src/components/modals/InsufficientFeesModal.tsx',
       'src/components/modals/ListModal.tsx',
       'src/components/modals/LoanWelcomeModal.tsx',
@@ -221,7 +219,7 @@ export default [
       'src/components/navigation/TransactionDetailsTitle.tsx',
       'src/components/notification/NotificationCenterCard.tsx',
       'src/components/progress-indicators/AccountSyncBar.tsx',
-      'src/components/progress-indicators/CancellableProcessingScene.tsx',
+
       'src/components/progress-indicators/FullScreenLoader.tsx',
       'src/components/progress-indicators/LoadingSplashScreen.tsx',
 
@@ -240,10 +238,6 @@ export default [
       'src/components/scenes/ConfirmScene.tsx',
       'src/components/scenes/CreateWalletAccountSelectScene.tsx',
       'src/components/scenes/CreateWalletAccountSetupScene.tsx',
-      'src/components/scenes/CreateWalletCompletionScene.tsx',
-
-      'src/components/scenes/CreateWalletImportOptionsScene.tsx',
-      'src/components/scenes/CreateWalletImportScene.tsx',
 
       'src/components/scenes/CurrencyNotificationScene.tsx',
       'src/components/scenes/DefaultFiatSettingScene.tsx',
@@ -280,8 +274,6 @@ export default [
       'src/components/scenes/Loans/LoanStatusScene.tsx',
 
       'src/components/scenes/ManageTokensScene.tsx',
-      'src/components/scenes/MigrateWalletCalculateFeeScene.tsx',
-      'src/components/scenes/MigrateWalletCompletionScene.tsx',
 
       'src/components/scenes/NotificationCenterScene.tsx',
       'src/components/scenes/NotificationScene.tsx',
@@ -295,9 +287,6 @@ export default [
 
       'src/components/scenes/SwapSettingsScene.tsx',
       'src/components/scenes/SwapSuccessScene.tsx',
-      'src/components/scenes/SweepPrivateKeyCalculateFeeScene.tsx',
-      'src/components/scenes/SweepPrivateKeyCompletionScene.tsx',
-      'src/components/scenes/SweepPrivateKeyProcessingScene.tsx',
 
       'src/components/scenes/TransactionDetailsScene.tsx',
 
@@ -409,7 +398,7 @@ export default [
       'src/controllers/loan-manager/redux/actions.ts',
       'src/controllers/loan-manager/util/waitForLoanAccountSync.ts',
       'src/hooks/animations/useFadeAnimation.ts',
-      'src/hooks/redux/useContactThumbnail.ts',
+
       'src/hooks/useAbortable.ts',
       'src/hooks/useAccountSyncRatio.tsx',
       'src/hooks/useAsyncEffect.ts',
@@ -467,8 +456,7 @@ export default [
       'src/plugins/stake-plugins/thorchainSavers/tcSaversPlugin.tsx',
       'src/plugins/stake-plugins/thorchainSavers/tcSaversPluginSegwit.tsx',
       'src/plugins/stake-plugins/uniswapV2/Ecosystem.ts',
-      'src/plugins/stake-plugins/uniswapV2/policies/cemeteryPolicy.ts',
-      'src/plugins/stake-plugins/uniswapV2/policies/masonryPolicy.ts',
+
       'src/plugins/stake-plugins/uniswapV2/policies/VelodromeV2StakePolicy.ts',
       'src/plugins/stake-plugins/util/accumulator.ts',
       'src/plugins/stake-plugins/util/biggystringplus.ts',

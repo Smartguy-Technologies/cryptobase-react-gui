@@ -2,13 +2,36 @@
 
 ## Unreleased (develop)
 
-## 4.46.0 (staging)
+## 4.48.0 (staging)
+
+- added: (iOS) Disable Liquid Glass UI for iOS 26 compatibility
+- added: Add dRPC and Subscan API key support
+- changed: Upgrade edge-core-js to v2.44.0
+- changed: Upgrade edge-currency-accountbased to v4.79.1
+- changed: Upgrade edge-exchange-plugins to v2.45.0
+- changed: Upgrade edge-login-ui-rn to v3.35.5
+- changed: Upgrade react-native-piratechain to v0.5.24
+- changed: Upgrade react-native-zcash to v0.10.6
+- fixed: Use makeMaxSpend in sweep private key flow
+- fixed: Migrate selected tokens with parent wallet
+
+## 4.47.0 (2026-03-24)
+
+- added: Include Zano sweep private key support for ZANO and tokens.
+- changed: Move `importKeyOptions` into `CreateWalletImportScene`
+- fixed: Swap KYC terms modal stacking on auto-refresh and accidental dismissal disabling providers
+- removed: Remove `CreateWalletImportOptionsScene`
+
+## 4.46.0 (2026-03-20)
 
 - added: Xgram swap exchange plugin support
 - added: New Banxa payment methods
 - added: Debug settings scene (Developer Mode only) with nodes/servers inspection, engine `dataDump` viewer, and log viewer
+- fixed: Swap quote timeout error interrupting user after cancelling a slow swap search
+- fixed: Disable "Migrate Wallets" button when no assets are available to migrate
+- fixed: Contacts permission prompt no longer appears on first receive and only shows from transaction-list or payee edit flows
 
-## 4.45.0 (2025-03-10)
+## 4.45.0 (2026-03-10)
 
 - fixed: Fixed Zano token minting transaction detection issues.
 - fixed: Fixed Zano resync data clearing bug.
@@ -16,7 +39,7 @@
 - fixed: Promo card carousel touch interception opening wrong card's CTA link.
 - removed: Temporarily disabled Nym mixnet until feature is stable.
 
-## 4.44.0 (2025-02-24)
+## 4.44.0 (2026-02-24)
 
 - added: MAYAChain (CACAO) wallet support
 - added: Monad (MON) wallet support
@@ -42,7 +65,7 @@
 - fixed: Fix incorrect Moonpay buy tracking values caused by deeplink handler overwrite
 - fixed: Search bars automatically accepting autocorrect suggestions
 
-## 4.43.2 (2025-02-15)
+## 4.43.2 (2026-02-15)
 
 - fixed: (Zano) Reject wrapped ETH addresses in address validation.
 
