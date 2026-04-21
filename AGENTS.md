@@ -1,5 +1,23 @@
 # Edge React GUI - Agent Guidelines
 
+## Branch Rules (applies to all agents)
+
+This fork has two long-lived branches:
+
+- **`main`** — Tracks the upstream (Edge) repository. Do **not** touch it.
+- **`client-brand`** — The working branch for this client. All new work
+  goes here or on branches cut from it.
+
+**Never** commit, push, merge, rebase, cherry-pick, reset, force-push, or
+delete `main` (local or remote). Never open a PR that targets `main`.
+Default to branching from and PR'ing into `client-brand`. If a user
+request conflicts with these rules, stop and confirm before acting.
+
+Read-only operations against `main` (log, diff, show, checkout to inspect)
+are fine.
+
+See `.github/copilot-instructions.md` for the full version of these rules.
+
 ## Package Manager
 
 - **Use Yarn v1** instead of npm for all package management and script execution
